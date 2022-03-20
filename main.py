@@ -33,19 +33,17 @@ debug_font = pygame.font.SysFont('Arial', 30)
 offset = (150, 150)
 
 level = levels.Level('assets/levels/example.tmx', config)
-
-movement = input.Movement(level.entity_manager)
 delta_time = 0
 
 # Add key callbacks
-movement.add(pygame.K_UP, input.Movement.UP)
-movement.add(pygame.K_w, input.Movement.UP)
-movement.add(pygame.K_DOWN, input.Movement.DOWN)
-movement.add(pygame.K_s, input.Movement.DOWN)
-movement.add(pygame.K_LEFT, input.Movement.LEFT)
-movement.add(pygame.K_a, input.Movement.LEFT)
-movement.add(pygame.K_RIGHT, input.Movement.RIGHT)
-movement.add(pygame.K_d, input.Movement.RIGHT)
+level.movement.add(pygame.K_UP, input.Movement.UP)
+level.movement.add(pygame.K_w, input.Movement.UP)
+level.movement.add(pygame.K_DOWN, input.Movement.DOWN)
+level.movement.add(pygame.K_s, input.Movement.DOWN)
+level.movement.add(pygame.K_LEFT, input.Movement.LEFT)
+level.movement.add(pygame.K_a, input.Movement.LEFT)
+level.movement.add(pygame.K_RIGHT, input.Movement.RIGHT)
+level.movement.add(pygame.K_d, input.Movement.RIGHT)
 
 # Game loop.
 print('Starting game loop.')
@@ -58,7 +56,7 @@ while True:
 		display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
 
 	for z, layer in enumerate(level.tile_layers):
-		movement.collision.append([])
+		level.movement.collision.append([])
 		for y, row in enumerate(layer.data):
 			for x, tile in enumerate(row):
 				tile = level.tmxdata.get_tile_image(x, y, z)
@@ -74,8 +72,8 @@ while True:
 
 					collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][0]
 					if collider.type is not None:
-						movement.collision[z].append((x, y))
-						movement.collision[z].append(collider.type)
+						level.movement.collision[z].append((x, y))
+						level.movement.collision[z].append(collider.type)
 
 	# Draws out-of-bounds entities in front of in-bounds geometry.
 	for task in level.entity_manager.get_outside_front_entities(len(level.tile_layers[0].data[0]), len(level.tile_layers[0].data), len(level.tile_layers)):
@@ -94,7 +92,7 @@ while True:
 			display = pygame.Surface((smaller / 3, smaller / 3))
 		
 	# Movement system
-	movement.run(pygame.key.get_pressed(), level.entity_manager, delta_time)
+	level.movement.run(pygame.key.get_pressed(), level.entity_manager, delta_time)
 
 	# Transform the screen so game content is always the same size, then update.
 	screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
