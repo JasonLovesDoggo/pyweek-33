@@ -54,14 +54,14 @@ for z, layer in enumerate(tmxdata.layers):
 print(f'Loaded {entity_count} entit{"y" if entity_count == 1 else "ies"}.')
 del entity_count
 
-movement = input.Movement(entity_manager)
-delta_time = 0
+movement = input.Movement()
 
-# Add key callbacks
-movement.add(pygame.K_UP, input.Movement.UP)
-movement.add(pygame.K_DOWN, input.Movement.DOWN)
-movement.add(pygame.K_LEFT, input.Movement.LEFT)
-movement.add(pygame.K_RIGHT, input.Movement.RIGHT)
+# def forward():
+# 	print('w pressed!')
+
+# movement.add(pygame.K_w, forward)
+
+falling = False
 
 # Game loop.
 print('Starting game loop.')
@@ -69,12 +69,14 @@ while True:
 	# Content rendering.
 	display.fill((0, 0, 0))
 
+	colliders = []
+
 	# Draws out-of-bounds entities behind in-bounds geometry.
 	for task in entity_manager.get_outside_back_entities():
 		display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
 
 	for z, layer in enumerate(tile_layers):
-		movement.collision.append([])
+		colliders.append([])
 		for y, row in enumerate(layer.data):
 			for x, tile in enumerate(row):
 				tile = tmxdata.get_tile_image(x, y, z)
@@ -90,8 +92,8 @@ while True:
 
 					collider = tmxdata.get_tile_properties(x, y, z)["colliders"][0]
 					if collider.type is not None:
-						movement.collision[z].append((x, y))
-						movement.collision[z].append(collider.type)
+						colliders[z].append((x, y))
+						colliders[z].append(collider.type)
 
 	# Draws out-of-bounds entities in front of in-bounds geometry.
 	for task in entity_manager.get_outside_front_entities(len(tile_layers[0].data[0]), len(tile_layers[0].data), len(tile_layers)):
@@ -106,10 +108,82 @@ while True:
 			smaller = height if height < width else width
 			display = pygame.Surface((smaller / 3, smaller / 3))
 		
-	# Movement system
+	# Temporary movement system
 	keys = pygame.key.get_pressed()
 
-	movement.run(keys, entity_manager, delta_time)
+	movement.run(keys)
+
+	player_index = 0
+	speed = 10
+
+	player = entity_manager.entities[player_index]
+	progress = (player.x - int(player.x), player.y - int(player.y))
+	try:
+		player_collision_layer = colliders[math.floor(player.z)]
+	except IndexError:
+		player_collision_layer = []
+	if not falling:
+		if keys[pygame.K_LEFT]:
+			target = (math.floor(player.x - speed * delta_time), math.floor(player.y))
+			if target not in player_collision_layer:
+				player.x -= speed * delta_time
+			else:
+				target_type = player_collision_layer[player_collision_layer.index(target) + 1]
+				if target_type == 'solid':
+					pass
+				elif target_type == 'stairs_east':
+					# player.x -= speed * delta_time
+					# player.z = math.floor(player.z) + (1 - progress[0]) + 0.1
+					pass
+		if keys[pygame.K_RIGHT]:
+			target = (math.floor(player.x + speed * delta_time), math.floor(player.y))
+			if target not in player_collision_layer:
+				player.x += speed * delta_time
+			else:
+				target_type = player_collision_layer[player_collision_layer.index(target) + 1]
+				if target_type == 'solid':
+					pass
+				elif target_type == 'stairs_west':
+					# player.x += speed * delta_time
+					# player.z = math.floor(player.z) + (1 - progress[0]) + 0.1
+					pass
+		if keys[pygame.K_UP]:
+			target = (math.floor(player.x), math.floor(player.y - speed * delta_time))
+			if target not in player_collision_layer:
+				player.y -= speed * delta_time
+			else:
+				target_type = player_collision_layer[player_collision_layer.index(target) + 1]
+				if target_type == 'solid':
+					pass
+				elif target_type == 'stairs_north':
+				# 	player.y -= speed * delta_time
+				# 	player.z = math.floor(player.z) + (1 - progress[1]) + 0.1
+					pass
+		if keys[pygame.K_DOWN]:
+			target = (math.floor(player.x), math.floor(player.y + speed * delta_time))
+			if target not in player_collision_layer:
+				player.y += speed * delta_time
+			else:
+				target_type = player_collision_layer[player_collision_layer.index(target) + 1]
+				if target_type == 'solid':
+					pass
+				elif target_type == 'stairs_south':
+				# 	player.y += speed * delta_time
+				# 	player.z = math.floor(player.z) + (1 - progress[1]) + 0.1
+					pass
+
+		entity_manager.entities[player_index] = player
+
+	target = (math.floor(player.x), math.floor(player.y))
+	try:
+		player_collision_layer = colliders[math.floor(player.z - 1)]
+	except IndexError:
+		player_collision_layer = []
+	if target not in player_collision_layer:
+		falling = True
+		player.z -= 3 * delta_time
+	else:
+		falling = False
 
 	# Transform the screen so game content is always the same size, then update.
 	screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
