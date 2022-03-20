@@ -12,7 +12,10 @@ class HiddenPrints:
 
 def instance_getter(to_count: list, instance: object) -> int:
     count = []
+    other = []
     for obj in to_count:
         if isinstance(obj, instance):
             count.append(obj)
-    return count
+        else:
+            other.append(obj)
+    return count, other

@@ -39,8 +39,8 @@ class Movement:
 		self.update(entity_manager)
 		for func in self.func:
 			if keys[func['code']]:
-				# if self.player.falling:
-				#     continue
+				if self.player.falling:
+					continue
 				func['func'](self, delta_time)
 		
 		self.gravity(delta_time) 
