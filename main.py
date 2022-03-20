@@ -9,6 +9,7 @@ import entity
 import math
 del HiddenPrints
 import configparser
+import input
 
 # Get game configs.
 config = configparser.ConfigParser()
@@ -52,6 +53,15 @@ for z, layer in enumerate(tmxdata.layers):
 			entity_count += 1
 print(f'Loaded {entity_count} entit{"y" if entity_count == 1 else "ies"}.')
 del entity_count
+
+movement = input.Movement()
+
+def w():
+	print('w pressed!')
+
+movement.add(pygame.K_w, w)
+
+falling = False
 
 # Game loop.
 print('Starting game loop.')
@@ -101,11 +111,7 @@ while True:
 	# Temporary movement system
 	keys = pygame.key.get_pressed()
 
-	@entity.keymapped(code = pygame.K_f)
-	def move_up():
-		print('Move up')
-
-	entity.run(keys)
+	movement.run(keys)
 
 	player_index = 0
 	speed = 10

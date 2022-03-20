@@ -1,11 +1,23 @@
-# Pyweek 
+ # Our [Teams](https://pyweek.org/e/tzs/) Submition to Pyweek 33
 
-## Setup (Linux and OSX)  
-Setup venv:  
-`python3 -m venv .venv`  
-Activate:  
-`source .venv/bin/activate`  
-Upgrade pip (you only need to do this once):  
-`python -m pip install --upgrade pip`  
-Install requirements:  
-`pip install -r requirements.txt`
+ ## About the game
+- insert details about the game here
+
+
+ ## Our team
+   
+ #### Devs
+ - **Jason** | [**_GitHub_**](https://github.com/JasonLovesDoggo) ~ [**_Discord_**](https://discordapp.com/users/511724576674414600) 
+ - **Robert** | [**_GitHub_**](https://github.com/robert-abraham) ~[**_Discord_**](https://discordapp.com/users/355535096486428675) 
+- **Camden** | [**_GitHub_**](https://github.com/SoupySoups) ~ [_**Discord**_](https://discordapp.com/users/858952348445179925) 
+- **jkohhokj** | [**_GitHub_**](https://github.com/jkohhokj) ~ [**_Discord_**](https://discordapp.com/users/455380055745363969) 
+- **Cameron** | [**_GitHub_**](https://github.com/n0remac) [~ **_Discord_**](https://discordapp.com/users/239260347981103105)
+- **Juan** | [**_GitHub_**](https://github.com/regalk13)
+- **Alex** | [**_GitHub_**](https://github.com/zdrc) 
+ #### Designers 
+ - **sybuns** | `No GitHub` 
+ - **stabbie** | `No GitHub` 
+ - **Reiner** | [**_GitHub_**](https://github.com/abdelrahmanMaxwell)  
+ #### Audio Engineers
+ - **Wem** | `No GitHub` 
+ - **Flarieanie** | `No GitHub` 
