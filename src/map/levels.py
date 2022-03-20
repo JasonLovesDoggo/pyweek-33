@@ -1,7 +1,7 @@
 from pytmx.util_pygame import load_pygame
 import pytmx
-from tools import instance_getter
-import entity
+from src.utils.tools import instance_getter
+import src.gameobjects.entity as entity
 
 class Level:
     def __init__(self, filename, config) -> None:
