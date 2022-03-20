@@ -111,9 +111,7 @@ while True:
 			display = pygame.Surface((smaller / 3, smaller / 3))
 		
 	# Movement system
-	keys = pygame.key.get_pressed()
-
-	movement.run(keys, entity_manager, delta_time)
+	movement.run(pygame.key.get_pressed(), entity_manager, delta_time)
 
 	# Transform the screen so game content is always the same size, then update.
 	screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
