@@ -3,7 +3,7 @@
  <editorsettings>
   <export target="example.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="Game.tsx"/>
+ <tileset firstgid="1" source="../textures/Game.tsx"/>
  <layer id="1" name="Tile Layer 1" width="12" height="10">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,

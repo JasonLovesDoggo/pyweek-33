@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.5" tiledversion="1.7.2" name="Game" tilewidth="20" tileheight="24" tilecount="20" columns="5">
  <tileoffset x="0" y="14"/>
- <image source="textures/texture_sheet.png" width="100" height="100"/>
+ <image source="texture_sheet.png" width="100" height="100"/>
  <tile id="0">
   <objectgroup draworder="index" id="2">
    <object id="1" type="stairs_south" x="0" y="19">

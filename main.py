@@ -13,7 +13,7 @@ import input
 
 # Get game configs.
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('assets/configs/config.ini')
 config.sections()
 
 # Setup pygame.
@@ -33,7 +33,7 @@ debug_font = pygame.font.SysFont('Arial', 30)
 offset = (150, 150)
 
 # Load map
-filename = 'example.tmx'
+filename = 'assets/levels/example.tmx'
 tmxdata = load_pygame(filename)
 tile_layers = instance_getter(tmxdata.layers, pytmx.TiledTileLayer)
 if config['LOGGING']['PRINTLEVELINFO'].lower() == 'true':
@@ -56,10 +56,10 @@ del entity_count
 
 movement = input.Movement()
 
-def w():
-	print('w pressed!')
+# def forward():
+# 	print('w pressed!')
 
-movement.add(pygame.K_w, w)
+# movement.add(pygame.K_w, forward)
 
 falling = False
 
