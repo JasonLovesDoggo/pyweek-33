@@ -1,4 +1,4 @@
-from tools import HiddenPrints, instance_getter
+from tools import HiddenPrints
 with HiddenPrints():
 	import pygame
 	from pygame.locals import *
@@ -6,10 +6,10 @@ import isometric
 from pytmx.util_pygame import load_pygame
 import pytmx
 import entity
-import math
 del HiddenPrints
 import configparser
 import input
+import levels
 
 # Get game configs.
 config = configparser.ConfigParser()
@@ -32,29 +32,9 @@ debug_font = pygame.font.SysFont('Arial', 30)
 
 offset = (150, 150)
 
-# Load map
-filename = 'assets/levels/example.tmx'
-tmxdata = load_pygame(filename)
-tile_layers = instance_getter(tmxdata.layers, pytmx.TiledTileLayer)
-if config['LOGGING']['PRINTLEVELINFO'].lower() == 'true':
-	print(f'''Loaded map: {tmxdata.filename}
-	- Tile size: {tmxdata.tilewidth}x{tmxdata.tileheight}
-	- Map size: {tmxdata.width}x{tmxdata.height}x{len(tile_layers)}
-	- Map version: {tmxdata.version}
-	- Tiled version: {tmxdata.tiledversion}\n''')
+level = levels.Level('assets/levels/example.tmx', config)
 
-# Load entities
-entity_count = 0
-entity_manager = entity.EntityManager()
-for z, layer in enumerate(tmxdata.layers):
-	if isinstance(layer, pytmx.TiledObjectGroup):
-		for obj in layer:
-			entity_manager.add_entity(entity.Entity((obj.x + 5) / 10, obj.y/10, (layer.offsety * -1 / 14) + 1, obj))
-			entity_count += 1
-print(f'Loaded {entity_count} entit{"y" if entity_count == 1 else "ies"}.')
-del entity_count
-
-movement = input.Movement(entity_manager)
+movement = input.Movement(level.entity_manager)
 delta_time = 0
 
 # Add key callbacks
@@ -74,17 +54,17 @@ while True:
 	display.fill((0, 0, 0))
 
 	# Draws out-of-bounds entities behind in-bounds geometry.
-	for task in entity_manager.get_outside_back_entities():
+	for task in level.entity_manager.get_outside_back_entities():
 		display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
 
-	for z, layer in enumerate(tile_layers):
+	for z, layer in enumerate(level.tile_layers):
 		movement.collision.append([])
 		for y, row in enumerate(layer.data):
 			for x, tile in enumerate(row):
-				tile = tmxdata.get_tile_image(x, y, z)
+				tile = level.tmxdata.get_tile_image(x, y, z)
 
 				# Draw in-bounds entities
-				tasks = entity_manager.get_tasks(x, y, z)
+				tasks = level.entity_manager.get_tasks(x, y, z)
 				if len(tasks) > 0:
 					for task in tasks:
 						display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
@@ -92,26 +72,29 @@ while True:
 				if tile != None:
 					display.blit(tile, isometric.isometric(x, y, z, offset[0], offset[1]), (0, 0, 20, 24))
 
-					collider = tmxdata.get_tile_properties(x, y, z)["colliders"][0]
+					collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][0]
 					if collider.type is not None:
 						movement.collision[z].append((x, y))
 						movement.collision[z].append(collider.type)
 
 	# Draws out-of-bounds entities in front of in-bounds geometry.
-	for task in entity_manager.get_outside_front_entities(len(tile_layers[0].data[0]), len(tile_layers[0].data), len(tile_layers)):
+	for task in level.entity_manager.get_outside_front_entities(len(level.tile_layers[0].data[0]), len(level.tile_layers[0].data), len(level.tile_layers)):
 		display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
 
 	for event in pygame.event.get():
 		if event.type == QUIT: # Quit routine.
 			pygame.quit()
 			quit()
+		elif event.type == KEYDOWN:
+			if event.key == K_ESCAPE:
+				level = level.switch_level('assets/levels/example2.tmx')
 		elif event.type == pygame.WINDOWRESIZED: # If window is resized, resize the display surface.
 			width, height = pygame.display.get_surface().get_size()
 			smaller = height if height < width else width
 			display = pygame.Surface((smaller / 3, smaller / 3))
 		
 	# Movement system
-	movement.run(pygame.key.get_pressed(), entity_manager, delta_time)
+	movement.run(pygame.key.get_pressed(), level.entity_manager, delta_time)
 
 	# Transform the screen so game content is always the same size, then update.
 	screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
