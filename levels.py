@@ -9,6 +9,7 @@ class Level:
         # Load map
         self.config = config
         self.filename = filename
+        self.show_fps = self.config['DEBUG']['SHOWFPS'].lower() == 'true'
         self.tmxdata = load_pygame(self.filename)
         self.print_info = self.config['LOGGING']['PRINTLEVELINFO'].lower() == 'true'
         self.tile_layers, self.non_tile_layers = instance_getter(self.tmxdata.layers, pytmx.TiledTileLayer)
@@ -35,3 +36,6 @@ class Level:
     def switch_level(self, filename):
         config = self.config
         return Level(filename, config)
+
+    def toggle_fps(self):
+        self.show_fps = not self.show_fps

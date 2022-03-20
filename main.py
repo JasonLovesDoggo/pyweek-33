@@ -3,9 +3,6 @@ with HiddenPrints():
 	import pygame
 	from pygame.locals import *
 import isometric
-from pytmx.util_pygame import load_pygame
-import pytmx
-import entity
 del HiddenPrints
 import configparser
 import input
@@ -18,7 +15,7 @@ config.sections()
 
 # Setup pygame.
 print('Successfully initialized %s pygame modules, %s failed.' % (pygame.init()))
-fps = int(config['WINDOW']['FPS'])
+max_fps = int(config['WINDOW']['MAXFPS'])
 clock = pygame.time.Clock()
 
 # Create windows and surfaces
@@ -84,8 +81,9 @@ while True:
 			pygame.quit()
 			quit()
 		elif event.type == KEYDOWN:
-			if event.key == K_ESCAPE:
-				level = level.switch_level('assets/levels/example2.tmx')
+			if event.key == K_F3:
+				level.toggle_fps()
+				# level = level.switch_level('assets/levels/example2.tmx')
 		elif event.type == pygame.WINDOWRESIZED: # If window is resized, resize the display surface.
 			width, height = pygame.display.get_surface().get_size()
 			smaller = height if height < width else width
@@ -97,8 +95,9 @@ while True:
 	# Transform the screen so game content is always the same size, then update.
 	screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
 
-	fps_surface = debug_font.render(f'Fps: {int(clock.get_fps())}', False, (255, 255, 255))
-	screen.blit(fps_surface, (0, 0))
+	if level.show_fps:
+		fps_surface = debug_font.render(f'Fps: {int(clock.get_fps())}', False, (255, 255, 255))
+		screen.blit(fps_surface, (0, 0))
 
 	pygame.display.update()
-	delta_time = clock.tick(fps) / 1000
+	delta_time = clock.tick(max_fps) / 1000
