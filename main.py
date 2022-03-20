@@ -59,9 +59,13 @@ delta_time = 0
 
 # Add key callbacks
 movement.add(pygame.K_UP, input.Movement.UP)
+movement.add(pygame.K_w, input.Movement.UP)
 movement.add(pygame.K_DOWN, input.Movement.DOWN)
+movement.add(pygame.K_s, input.Movement.DOWN)
 movement.add(pygame.K_LEFT, input.Movement.LEFT)
+movement.add(pygame.K_a, input.Movement.LEFT)
 movement.add(pygame.K_RIGHT, input.Movement.RIGHT)
+movement.add(pygame.K_d, input.Movement.RIGHT)
 
 # Game loop.
 print('Starting game loop.')
