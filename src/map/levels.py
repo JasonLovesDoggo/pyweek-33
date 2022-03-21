@@ -3,8 +3,9 @@ import pytmx
 from src.utils.tools import instance_getter
 import src.gameobjects.entity as entity
 import src.utils.input as input
-import src.map.render as render
+import src.rendering.render as render
 import src.gameobjects.player as player
+import src.rendering.animations as animations
 
 
 class Level:
@@ -13,6 +14,7 @@ class Level:
         self.display = display
         self.config = config
         self.filename = filename
+        self.animations_manager = animations.Animation_manager()
         self.tmxdata = load_pygame(self.filename)
         self.print_info = self.config["LOGGING"]["PRINTLEVELINFO"].lower() == "true"
         self.tile_layers, self.non_tile_layers = instance_getter(

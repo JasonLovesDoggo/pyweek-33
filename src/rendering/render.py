@@ -20,7 +20,19 @@ class Tile_Manager:
             level.movement.collision.append([])
             for y, row in enumerate(layer.data):
                 for x, tile in enumerate(row):
-                    tile = level.tmxdata.get_tile_image(x, y, z)
+                    try:
+                        animation = level.tmxdata.get_tile_properties(x, y, z)["frames"]
+                        if animation == []:
+                            animation = None
+                    except TypeError:
+                        animation = None
+
+                    if animation is None:
+                        tile = level.tmxdata.get_tile_image(x, y, z)
+                    else:
+                        tile = level.animations_manager.tile(
+                            animation, x, y, z, level.tmxdata
+                        )
 
                     # Draw in-bounds entities
                     tasks = level.entity_manager.get_tasks(x, y, z)
@@ -44,11 +56,11 @@ class Tile_Manager:
                             collider = level.tmxdata.get_tile_properties(x, y, z)[
                                 "colliders"
                             ][0]
-                            # print(level.tmxdata.get_tile_properties(x, y, z)['frames'])
+
                             if collider.type is not None:
                                 level.movement.collision[z].append((x, y))
                                 level.movement.collision[z].append(collider.type)
-                        except TypeError:
+                        except TypeError and KeyError:
                             pass
 
         # Draws out-of-bounds entities in front of in-bounds geometry.
