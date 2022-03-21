@@ -18,5 +18,4 @@
 #         return f"Entity: {self.x}, {self.y}, {self.z}"
 
 
-
 # Working on this atm.
