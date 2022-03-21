@@ -8,7 +8,7 @@ del HiddenPrints
 import configparser
 import src.utils.input as input
 import src.map.levels as levels
-import render
+import src.map.render as render
 
 # Get game configs.
 config = configparser.ConfigParser()
@@ -19,25 +19,35 @@ offset = (150, 150)
 
 def setup_pygame():
 	print('Successfully initialized %s pygame modules, %s failed.' % (pygame.init()))
-	fps = int(config['WINDOW']['FPS'])
 	clock = pygame.time.Clock()
 
 	# Create windows and surfaces
 	print('Creating game displays.')
-	width, height = int(config['WINDOW']['DEFAULTX']), int(config['WINDOW']['DEFAULTY'])
+	size = (int(config['WINDOW']['DEFAULTX']), int(config['WINDOW']['DEFAULTY']))
 	pygame.display.set_caption(config['WINDOW']['TITLE'])
-	screen = pygame.display.set_mode((width, height),  pygame.RESIZABLE)
-	smaller = height if height < width else width
+	screen = pygame.display.set_mode(size,  pygame.RESIZABLE)
+	smaller = size[1] if size[1] < size[0] else size[0]
 	display = pygame.Surface((smaller / 3, smaller / 3))
 	debug_font = pygame.font.SysFont('Arial', 30)
 
-	return fps, clock, width, height, screen, display, debug_font
+	return clock, size, screen, display, debug_font
 
 
-def run_game(level, fps, clock, width, height, screen, display, debug_font, delta_time, renderer):
+def update_screen(screen, display, font, clock):
+	screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
+
+	if config['DEBUG']['SHOWFPS'].lower() == 'true':
+		fps_surface = font.render(f'Fps: {int(clock.get_fps())}', False, (255, 255, 255))
+		screen.blit(fps_surface, (0, 0))
+
+	pygame.display.update()
+	return clock.tick(int(config['WINDOW']['MAXFPS'])) / 1000
+
+
+def run_game(level, clock, size, screen, debug_font, delta_time):
 	print('Starting game loop.')
 	while True:
-		renderer.render_tiles_and_entities(level, offset)
+		level.renderer.render_tiles_and_entities(level, offset)
 
 		for event in pygame.event.get():
 			if event.type == QUIT: # Quit routine.
@@ -47,27 +57,20 @@ def run_game(level, fps, clock, width, height, screen, display, debug_font, delt
 				if event.key == K_F3:
 					level = level.switch_level('assets/levels/example2.tmx')
 			elif event.type == pygame.WINDOWRESIZED: # If window is resized, resize the display surface.
-				width, height = pygame.display.get_surface().get_size()
-				smaller = height if height < width else width
-				display = pygame.Surface((smaller / 3, smaller / 3))
+				size = (pygame.display.get_surface().get_size())
+				smaller = size[1] if size[1] < size[0] else size[0]
+				level.display = pygame.Surface((smaller / 3, smaller / 3))
 			
 		# Movement system
 		level.movement.run(pygame.key.get_pressed(), level.entity_manager, delta_time)
 
-		# Transform the screen so game content is always the same size, then update.
-		screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
-
-		fps_surface = debug_font.render(f'Fps: {int(clock.get_fps())}', False, (255, 255, 255))
-		screen.blit(fps_surface, (0, 0))
-
-		pygame.display.update()
-		delta_time = clock.tick(fps) / 1000
+		delta_time = update_screen(screen, level.display, debug_font, clock)
 
 
 def main():
-	fps, clock, width, height, screen, display, debug_font = setup_pygame()
+	clock, size, screen, display, debug_font = setup_pygame()
 	
-	level = levels.Level('assets/levels/example.tmx', config)
+	level = levels.Level('assets/levels/example.tmx', config, display)
 
 	delta_time = 0
 
@@ -81,9 +84,8 @@ def main():
 	level.movement.add(pygame.K_RIGHT, input.Movement.RIGHT)
 	level.movement.add(pygame.K_d, input.Movement.RIGHT)
 
-	renderer = render.Tile_Manager(display)
+	run_game(level, clock, size, screen, debug_font, delta_time)
 
-	run_game(level, fps, clock, width, height, screen, display, debug_font, delta_time, renderer)
 
 if __name__ == "__main__":
     main()

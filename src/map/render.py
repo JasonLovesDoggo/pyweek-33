@@ -27,10 +27,14 @@ class Tile_Manager:
 					if tile != None:
 						self.surface.blit(tile, isometric.isometric(x, y, z, offset[0], offset[1]), (0, 0, 20, 24))
 
-						collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][0]
-						if collider.type is not None:
-							level.movement.collision[z].append((x, y))
-							level.movement.collision[z].append(collider.type)
+						try:
+							collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][0]
+							# print(level.tmxdata.get_tile_properties(x, y, z)['frames'])
+							if collider.type is not None:
+								level.movement.collision[z].append((x, y))
+								level.movement.collision[z].append(collider.type)
+						except TypeError:
+							pass
 
 		# Draws out-of-bounds entities in front of in-bounds geometry.
 		for task in level.entity_manager.get_outside_front_entities(len(level.tile_layers[0].data[0]), len(level.tile_layers[0].data), len(level.tile_layers)):
