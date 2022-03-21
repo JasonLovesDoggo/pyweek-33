@@ -25,7 +25,7 @@ def setup_pygame():
     print("Creating game displays.")
     size = (int(config["WINDOW"]["DEFAULTX"]), int(config["WINDOW"]["DEFAULTY"]))
     pygame.display.set_caption(config["WINDOW"]["TITLE"])
-    screen = pygame.display.set_mode(size, pygame.RESIZABLE)
+    screen = pygame.display.set_mode(size) # ad , pygame.RESIZABLE if you want it to be resizeable NOTE causes problems
     smaller = size[1] if size[1] < size[0] else size[0]
     display = pygame.Surface((smaller / 3, smaller / 3))
     debug_font = pygame.font.SysFont("Arial", 30)
