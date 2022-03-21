@@ -1,6 +1,6 @@
 import math
 
-from utils import is_negative
+from src.utils.tools import is_negative
 
 
 class Movement:
