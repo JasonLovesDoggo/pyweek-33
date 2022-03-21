@@ -9,8 +9,6 @@ import src.map.levels as levels
 
 del HiddenPrints
 
-offset = (150, 150)
-
 # Get game configs.
 config = configparser.ConfigParser()
 config.read("assets/configs/config.ini")
@@ -53,9 +51,10 @@ def update_screen(screen, level, font, clock):
 
 
 def run_game(level, clock, size, screen, debug_font, delta_time):
+    offset = (150, 150)
     print("Starting game loop.")
     while True:
-        level.renderer.render_tiles_and_entities(level, offset)
+        offset = level.renderer.render_tiles_and_entities(level, offset, int(config['SETTINGS']['BOXCAMERAPADDING']))
 
         for event in pygame.event.get():
             if event.type == QUIT:  # Quit routine.

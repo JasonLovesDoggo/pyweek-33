@@ -6,6 +6,8 @@ class Player:
         self.x = x
         self.y = y
         self.z = z
+        self.real_x = None
+        self.real_y = None
         self.x_floor = lambda: math.floor(self.x)
         self.y_floor = lambda: math.floor(self.y)
         self.z_floor = lambda: math.floor(self.z)
