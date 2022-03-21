@@ -40,7 +40,9 @@ class Tile_Manager:
                     tasks = level.entity_manager.get_tasks(x, y, z)
                     if len(tasks) > 0:
                         for task in tasks:
-                            pos = isometric.isometric(task.x, task.y, task.z, offset[0], offset[1])
+                            pos = isometric.isometric(
+                                task.x, task.y, task.z, offset[0], offset[1]
+                            )
                             if isinstance(task, player.Player):
                                 task.real_x = pos[0]
                                 task.real_y = pos[1]
@@ -54,7 +56,9 @@ class Tile_Manager:
                         )
 
                         try:
-                            collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][0]
+                            collider = level.tmxdata.get_tile_properties(x, y, z)[
+                                "colliders"
+                            ][0]
 
                             if collider.type is not None:
                                 level.movement.collision[z].append((x, y))
@@ -73,7 +77,7 @@ class Tile_Manager:
                 task.real_x = pos[0]
                 task.real_y = pos[1]
             self.surface.blit(task.image, pos)
-            
+
         # try:
         player_obj = level.entity_manager.entities[level.entity_manager.player]
         size = level.display.get_size()
