@@ -39,8 +39,8 @@ def setup():
     return clock, size, screen, display, debug_font
 
 
-def update_screen(screen, display, font, clock):
-    screen.blit(pygame.transform.scale(display, screen.get_size()), (0, 0))
+def update_screen(screen, level, font, clock):
+    screen.blit(pygame.transform.scale(level.display, screen.get_size()), (0, 0))
 
     if config["DEBUG"]["SHOWFPS"].lower() == "true":
         fps_surface = font.render(
@@ -62,21 +62,27 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
                 pygame.quit()
                 quit()
             elif event.type == KEYDOWN:
-                if event.key == K_F3:
-                    level = level.switch_level("assets/levels/example2.tmx")
+                if event.key == K_F1:
+                    level = level.switch_level(level.filename)
+                elif event.key == K_F2:
+                    if config["DEBUG"]["SHOWFPS"].lower() == "true":
+                        config["DEBUG"]["SHOWFPS"] = "false"
+                    else:
+                        config["DEBUG"]["SHOWFPS"] = "true"
             elif (
                 event.type == pygame.WINDOWRESIZED
             ):  # If window is resized, resize the display surface.
                 size = pygame.display.get_surface().get_size()
                 smaller = size[1] if size[1] < size[0] else size[0]
                 level.display = pygame.Surface((smaller / 3, smaller / 3))
+                level.update()
 
         # Movement system
         level.movement.run(
             pygame.key.get_pressed(), level.entity_manager, delta_time, offset
         )
 
-        delta_time = update_screen(screen, level.display, debug_font, clock)
+        delta_time = update_screen(screen, level, debug_font, clock)
 
 
 def main():

@@ -73,3 +73,6 @@ class Level:
 
         newClass.movement.func = movementFuncs
         return newClass
+
+    def update(self):
+        self.renderer.surface = self.display

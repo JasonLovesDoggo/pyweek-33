@@ -53,9 +53,7 @@ class Tile_Manager:
                         )
 
                         try:
-                            collider = level.tmxdata.get_tile_properties(x, y, z)[
-                                "colliders"
-                            ][0]
+                            collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][0]
 
                             if collider.type is not None:
                                 level.movement.collision[z].append((x, y))
