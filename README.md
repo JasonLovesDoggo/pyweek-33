@@ -15,6 +15,8 @@
 - **Juan** | [**_GitHub_**](https://github.com/regalk13)
 - **Alex** | [**_GitHub_**](https://github.com/zdrc) 
  #### Designers 
+ - **Apples** | `No GitHub` 
+ - **squig** | `No GitHub` 
  - **sybuns** | `No GitHub` 
  - **stabbie** | `No GitHub` 
  - **Reiner** | [**_GitHub_**](https://github.com/abdelrahmanMaxwell)  
