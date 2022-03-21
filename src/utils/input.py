@@ -60,20 +60,21 @@ class Movement:
         return offset
 
     def gravity(self, delta_time):
-        if (
-            self.player.x_floor(),
-            self.player.y_floor(),
-        ) not in self.player_ground_collision_layer:
-            self.player.falling = True
-            self.player.z -= self.gravity_speed * delta_time
-            # Reactivate this when death screen is done.
-            # if is_negative(self.player.z):
-            #     self.player.deadcount += 1
-            #     if self.player.deadcount > 40:
-            #         pass  # implement death/title screen
-            #     pass
-        else:
-            self.player.falling = False
+        # if (
+        #     self.player.x_floor(),
+        #     self.player.y_floor(),
+        # ) not in self.player_ground_collision_layer:
+        #     self.player.falling = True
+        #     self.player.z -= self.gravity_speed * delta_time
+        #     # Reactivate this when death screen is done.
+        #     # if is_negative(self.player.z):
+        #     #     self.player.deadcount += 1
+        #     #     if self.player.deadcount > 40:
+        #     #         pass  # implement death/title screen
+        #     #     pass
+        # else:
+        #     self.player.falling = False
+        pass
 
     def UP(self, delta_time):
         local_speed = self.player_speed * delta_time

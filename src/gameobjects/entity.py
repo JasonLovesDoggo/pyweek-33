@@ -5,6 +5,7 @@ import src.gameobjects.player as player
 class EntityManager:
     def __init__(self):
         self.entities = []
+        self.player = None
 
     def get_tasks(self, x, y, z):
         found = False
@@ -24,6 +25,7 @@ class EntityManager:
     def find_player_index(self):
         for index, entity in enumerate(self.entities):
             if isinstance(entity, player.Player):
+                self.player = index
                 return index
         return 0
 
@@ -47,22 +49,27 @@ class EntityManager:
                 self.entities.insert(self.entities.index(existing_entity), entity)
                 copy = self.entities
                 copy.reverse()
+                self.find_player_index()
                 return self.entities
             elif existing_entity.z == entity.z:
                 if existing_entity.y < entity.y:
                     self.entities.insert(self.entities.index(existing_entity), entity)
+                    self.find_player_index()
                     return self.entities
                 elif existing_entity.y == entity.y:
                     if existing_entity.x <= entity.x:
                         self.entities.insert(
                             self.entities.index(existing_entity), entity
                         )
+                        self.find_player_index()
                         return self.entities
         # If it reaches this point, append to end.
         self.entities.append(entity)
 
     def remove_entity(self, entity):
         self.entities.remove(entity)
+        self.find_player_index()
+        return self.entities
 
 
 class Entity:

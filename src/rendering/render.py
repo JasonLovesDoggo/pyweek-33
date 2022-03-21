@@ -1,4 +1,5 @@
 import src.utils.isometric as isometric
+import src.gameobjects.player as player
 
 
 class Tile_Manager:
@@ -6,15 +7,16 @@ class Tile_Manager:
         self.surface = surface
         pass
 
-    def render_tiles_and_entities(self, level, offset):
+    def render_tiles_and_entities(self, level, offset, padding):
         self.surface.fill((0, 0, 0))
 
         # Draws out-of-bounds entities behind in-bounds geometry.
         for task in level.entity_manager.get_outside_back_entities():
-            self.surface.blit(
-                task.image,
-                isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]),
-            )
+            pos = isometric.isometric(task.x, task.y, task.z, offset[0], offset[1])
+            if isinstance(task, player.Player):
+                task.real_x = pos[0]
+                task.real_y = pos[1]
+            self.surface.blit(task.image, pos)
 
         for z, layer in enumerate(level.tile_layers):
             level.movement.collision.append([])
@@ -38,12 +40,13 @@ class Tile_Manager:
                     tasks = level.entity_manager.get_tasks(x, y, z)
                     if len(tasks) > 0:
                         for task in tasks:
-                            self.surface.blit(
-                                task.image,
-                                isometric.isometric(
-                                    task.x, task.y, task.z, offset[0], offset[1]
-                                ),
+                            pos = isometric.isometric(
+                                task.x, task.y, task.z, offset[0], offset[1]
                             )
+                            if isinstance(task, player.Player):
+                                task.real_x = pos[0]
+                                task.real_y = pos[1]
+                            self.surface.blit(task.image, pos)
 
                     if tile is not None:
                         self.surface.blit(
@@ -69,7 +72,24 @@ class Tile_Manager:
             len(level.tile_layers[0].data),
             len(level.tile_layers),
         ):
-            self.surface.blit(
-                task.image,
-                isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]),
-            )
+            pos = isometric.isometric(task.x, task.y, task.z, offset[0], offset[1])
+            if isinstance(task, player.Player):
+                task.real_x = pos[0]
+                task.real_y = pos[1]
+            self.surface.blit(task.image, pos)
+
+        # try:
+        player_obj = level.entity_manager.entities[level.entity_manager.player]
+        size = level.display.get_size()
+        if player_obj.real_x <= padding:
+            offset = (offset[0] + padding - player_obj.real_x, offset[1])
+        elif player_obj.real_x >= size[0] - padding:
+            offset = (offset[0] + size[0] - padding - player_obj.real_x, offset[1])
+        if player_obj.real_y <= padding:
+            offset = (offset[0], offset[1] + padding - player_obj.real_y)
+        elif player_obj.real_y >= size[1] - padding:
+            offset = (offset[0], offset[1] + size[1] - padding - player_obj.real_y)
+        # except TypeError:
+        #     pass
+
+        return offset
