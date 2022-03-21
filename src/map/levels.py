@@ -2,6 +2,7 @@ from pytmx.util_pygame import load_pygame
 import pytmx
 from src.utils.tools import instance_getter
 import src.gameobjects.entity as entity
+import src.utils.input as input
 
 class Level:
     def __init__(self, filename, config) -> None:
@@ -28,6 +29,8 @@ class Level:
                     self.entity_count += 1
         if self.print_info:
             print(f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.')
+
+        self.movement = input.Movement(self.entity_manager)
 
     def switch_level(self, filename):
         config = self.config
