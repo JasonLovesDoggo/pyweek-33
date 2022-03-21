@@ -44,8 +44,11 @@ class Movement:
 
     def run(self, keys, entity_manager, delta_time):
         self.update(entity_manager)
+
+        used = []
         for func in self.func:
-            if keys[func["code"]]:
+            if keys[func["code"]] and func["func"] not in used:
+                used.append(func["func"])
                 if self.player.falling:
                     continue
                 func["func"](self, delta_time)
