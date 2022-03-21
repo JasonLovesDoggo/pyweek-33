@@ -1,5 +1,6 @@
 import math
 
+
 class EntityManager:
     def __init__(self):
         self.entities = []
@@ -8,10 +9,14 @@ class EntityManager:
         found = False
         tasks = []
         for entity in self.entities:
-            if math.floor(entity.x) == x and math.floor(entity.y) == y and math.floor(entity.z) == z:
+            if (
+                math.floor(entity.x) == x
+                and math.floor(entity.y) == y
+                and math.floor(entity.z) == z
+            ):
                 found = True
                 tasks.append(entity)
-            elif found == True:
+            elif found:
                 break
         return tasks
 
@@ -42,7 +47,9 @@ class EntityManager:
                     return self.entities
                 elif existing_entity.y == entity.y:
                     if existing_entity.x <= entity.x:
-                        self.entities.insert(self.entities.index(existing_entity), entity)
+                        self.entities.insert(
+                            self.entities.index(existing_entity), entity
+                        )
                         return self.entities
         # If it reaches this point, append to end.
         self.entities.append(entity)
@@ -59,10 +66,11 @@ class Entity:
         self.x_floor = lambda: math.floor(self.x)
         self.y_floor = lambda: math.floor(self.y)
         self.z_floor = lambda: math.floor(self.z)
+        self.deadcount: int = 0
 
         self.obj = obj
         self.image = obj.image
         self.falling = False
 
     def __str__(self) -> str:
-        return f'Entity: {self.x}, {self.y}, {self.z}'
+        return f"Entity: {self.x}, {self.y}, {self.z}"
