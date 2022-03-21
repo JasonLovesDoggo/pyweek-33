@@ -3,10 +3,12 @@ import pytmx
 from src.utils.tools import instance_getter
 import src.gameobjects.entity as entity
 import src.utils.input as input
+import src.map.render as render
 
 class Level:
-    def __init__(self, filename, config) -> None:
+    def __init__(self, filename, config, display) -> None:
         # Load map
+        self.display = display
         self.config = config
         self.filename = filename
         self.tmxdata = load_pygame(self.filename)
@@ -32,6 +34,14 @@ class Level:
 
         self.movement = input.Movement(self.entity_manager)
 
+        self.renderer = render.Tile_Manager(display)
+
     def switch_level(self, filename):
         config = self.config
-        return Level(filename, config)
+        display = self.display
+        movementFuncs = self.movement.func
+
+        newClass = Level(filename, config, display)
+
+        newClass.movement.func = movementFuncs
+        return newClass
