@@ -21,3 +21,18 @@
  #### Audio Engineers
  - **Wem** | `No GitHub` 
  - **Flarieanie** | `No GitHub` 
+                                                        
+
+ ## installation instructions 
+1. Install [python](https://www.python.org/downloads/)
+2. Clone the repo
+3. Install the requirements via `pip install -r requirements.txt`
+4. Run main.py
+              
+#### contributing Installation instruction
+  1. If you are contributing also install the dev requirements via 
+  `pip install -r dev-requirments.txt`
+  2. Run 
+ `black .`
+and `flake8 .` before a pull require and fix any bugs
+  
