@@ -4,12 +4,11 @@ with HiddenPrints():
 	from pygame.locals import *
 import src.utils.isometric as isometric
 from pytmx.util_pygame import load_pygame
-import pytmx
-import src.gameobjects.entity as entity
 del HiddenPrints
 import configparser
 import src.utils.input as input
 import src.map.levels as levels
+import render
 
 # Get game configs.
 config = configparser.ConfigParser()
@@ -35,47 +34,17 @@ def setup_pygame():
 	return fps, clock, width, height, screen, display, debug_font
 
 
-def run_game(level, fps, clock, width, height, screen, display, debug_font, movement, delta_time):
-	# Game loop.
+def run_game(level, fps, clock, width, height, screen, display, debug_font, delta_time, renderer):
 	print('Starting game loop.')
 	while True:
-		# Content rendering.
-		display.fill((0, 0, 0))
-
-		# Draws out-of-bounds entities behind in-bounds geometry.
-		for task in level.entity_manager.get_outside_back_entities():
-			display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
-
-		for z, layer in enumerate(level.tile_layers):
-			movement.collision.append([])
-			for y, row in enumerate(layer.data):
-				for x, tile in enumerate(row):
-					tile = level.tmxdata.get_tile_image(x, y, z)
-
-					# Draw in-bounds entities
-					tasks = level.entity_manager.get_tasks(x, y, z)
-					if len(tasks) > 0:
-						for task in tasks:
-							display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
-
-					if tile != None:
-						display.blit(tile, isometric.isometric(x, y, z, offset[0], offset[1]), (0, 0, 20, 24))
-
-						collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][0]
-						if collider.type is not None:
-							movement.collision[z].append((x, y))
-							movement.collision[z].append(collider.type)
-
-		# Draws out-of-bounds entities in front of in-bounds geometry.
-		for task in level.entity_manager.get_outside_front_entities(len(level.tile_layers[0].data[0]), len(level.tile_layers[0].data), len(level.tile_layers)):
-			display.blit(task.image, isometric.isometric(task.x, task.y, task.z, offset[0], offset[1]))
+		renderer.render_tiles_and_entities(level, offset)
 
 		for event in pygame.event.get():
 			if event.type == QUIT: # Quit routine.
 				pygame.quit()
 				quit()
 			elif event.type == KEYDOWN:
-				if event.key == K_ESCAPE:
+				if event.key == K_F3:
 					level = level.switch_level('assets/levels/example2.tmx')
 			elif event.type == pygame.WINDOWRESIZED: # If window is resized, resize the display surface.
 				width, height = pygame.display.get_surface().get_size()
@@ -83,7 +52,7 @@ def run_game(level, fps, clock, width, height, screen, display, debug_font, move
 				display = pygame.Surface((smaller / 3, smaller / 3))
 			
 		# Movement system
-		movement.run(pygame.key.get_pressed(), level.entity_manager, delta_time)
+		level.movement.run(pygame.key.get_pressed(), level.entity_manager, delta_time)
 
 		# Transform the screen so game content is always the same size, then update.
 		screen.blit(pygame.transform.scale(display, (height, height)), (0, 0))
@@ -96,24 +65,25 @@ def run_game(level, fps, clock, width, height, screen, display, debug_font, move
 
 
 def main():
-	
 	fps, clock, width, height, screen, display, debug_font = setup_pygame()
 	
 	level = levels.Level('assets/levels/example.tmx', config)
 
 	delta_time = 0
 
-	movement = input.Movement(level.entity_manager)
 	# Add key callbacks
-	movement.add(pygame.K_UP, input.Movement.UP)
-	movement.add(pygame.K_w, input.Movement.UP)
-	movement.add(pygame.K_DOWN, input.Movement.DOWN)
-	movement.add(pygame.K_s, input.Movement.DOWN)
-	movement.add(pygame.K_LEFT, input.Movement.LEFT)
-	movement.add(pygame.K_a, input.Movement.LEFT)
-	movement.add(pygame.K_RIGHT, input.Movement.RIGHT)
-	movement.add(pygame.K_d, input.Movement.RIGHT)
-	run_game(level, fps, clock, width, height, screen, display, debug_font, movement, delta_time)
+	level.movement.add(pygame.K_UP, input.Movement.UP)
+	level.movement.add(pygame.K_w, input.Movement.UP)
+	level.movement.add(pygame.K_DOWN, input.Movement.DOWN)
+	level.movement.add(pygame.K_s, input.Movement.DOWN)
+	level.movement.add(pygame.K_LEFT, input.Movement.LEFT)
+	level.movement.add(pygame.K_a, input.Movement.LEFT)
+	level.movement.add(pygame.K_RIGHT, input.Movement.RIGHT)
+	level.movement.add(pygame.K_d, input.Movement.RIGHT)
+
+	renderer = render.Tile_Manager(display)
+
+	run_game(level, fps, clock, width, height, screen, display, debug_font, delta_time, renderer)
 
 if __name__ == "__main__":
     main()
