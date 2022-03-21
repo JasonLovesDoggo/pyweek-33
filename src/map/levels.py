@@ -4,6 +4,7 @@ from src.utils.tools import instance_getter
 import src.gameobjects.entity as entity
 import src.utils.input as input
 import src.map.render as render
+import src.gameobjects.player as player
 
 
 class Level:
@@ -32,8 +33,19 @@ class Level:
         for layer in self.non_tile_layers:
             if isinstance(layer, pytmx.TiledObjectGroup):
                 for obj in layer:
+                    try:
+                        type = obj.type.lower()
+                    except AttributeError:
+                        type = ""
                     self.entity_manager.add_entity(
                         entity.Entity(
+                            (obj.x + 5) / 10,
+                            obj.y / 10,
+                            (layer.offsety * -1 / 14) + 1,
+                            obj,
+                        )
+                        if type != "player"
+                        else player.Player(
                             (obj.x + 5) / 10,
                             obj.y / 10,
                             (layer.offsety * -1 / 14) + 1,

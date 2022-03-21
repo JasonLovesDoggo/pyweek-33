@@ -9,21 +9,27 @@ import src.map.levels as levels
 
 del HiddenPrints
 
+offset = (150, 150)
+
 # Get game configs.
 config = configparser.ConfigParser()
 config.read("assets/configs/config.ini")
 config.sections()
 
-offset = (150, 150)
 
-
-def setup_pygame():
-    print("Successfully initialized %s pygame modules, %s failed." % (pygame.init()))
+def setup():
+    print_setup = config["LOGGING"]["PRINTSETUPINFO"].lower() == "true"
+    if print_setup:
+        print("Loaded configs.")
+        print(
+            "Successfully initialized %s pygame modules, %s failed." % (pygame.init())
+        )
     clock = pygame.time.Clock()
 
     # Create windows and surfaces
-    print("Creating game displays.")
     size = (int(config["WINDOW"]["DEFAULTX"]), int(config["WINDOW"]["DEFAULTY"]))
+    if print_setup:
+        print("Creating game displays. \nWindow size: %sx%s" % size)
     pygame.display.set_caption(config["WINDOW"]["TITLE"])
     screen = pygame.display.set_mode(
         size
@@ -68,13 +74,15 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
                 level.display = pygame.Surface((smaller / 3, smaller / 3))
 
         # Movement system
-        level.movement.run(pygame.key.get_pressed(), level.entity_manager, delta_time)
+        level.movement.run(
+            pygame.key.get_pressed(), level.entity_manager, delta_time, offset
+        )
 
         delta_time = update_screen(screen, level.display, debug_font, clock)
 
 
 def main():
-    clock, size, screen, display, debug_font = setup_pygame()
+    clock, size, screen, display, debug_font = setup()
 
     level = levels.Level("assets/levels/example.tmx", config, display)
 
