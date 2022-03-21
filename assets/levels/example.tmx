@@ -19,7 +19,7 @@
 </data>
  </layer>
  <objectgroup id="7" name="Players">
-  <object id="46" gid="17" x="75.5" y="75.5" width="20" height="24"/>
+  <object id="46" type="player" gid="17" x="75.5" y="75.5" width="20" height="24"/>
  </objectgroup>
  <layer id="3" name="Tile Layer 2" width="12" height="10" offsetx="0" offsety="-14">
   <data encoding="csv">

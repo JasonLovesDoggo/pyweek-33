@@ -1,4 +1,5 @@
 import math
+import src.gameobjects.player as player
 
 
 class EntityManager:
@@ -19,6 +20,12 @@ class EntityManager:
             elif found:
                 break
         return tasks
+
+    def find_player_index(self):
+        for index, entity in enumerate(self.entities):
+            if isinstance(entity, player.Player):
+                return index
+        return 0
 
     def get_outside_back_entities(self):
         outside_tiles = []
@@ -66,7 +73,6 @@ class Entity:
         self.x_floor = lambda: math.floor(self.x)
         self.y_floor = lambda: math.floor(self.y)
         self.z_floor = lambda: math.floor(self.z)
-        self.deadcount: int = 0
 
         self.obj = obj
         self.image = obj.image

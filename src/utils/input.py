@@ -1,6 +1,6 @@
 import math
-
-from src.utils.tools import is_negative
+# Reactivate this when death screen is done.
+# from src.utils.tools import is_negative
 
 
 class Movement:
@@ -8,7 +8,7 @@ class Movement:
         self.func = []
         self.entity_manager = entity_manager
         self.collision = collisions
-        self.player_id = 0
+        self.player_id = entity_manager.find_player_index()
         self.player = entity_manager.entities[self.player_id]
 
         try:
@@ -30,6 +30,7 @@ class Movement:
 
     def update(self, entity_manager):
         self.entity_manager = entity_manager
+        self.player_id = entity_manager.find_player_index()
         self.player = entity_manager.entities[self.player_id]
         try:
             self.player_ground_collision_layer = self.collision[
@@ -64,11 +65,12 @@ class Movement:
         ) not in self.player_ground_collision_layer:
             self.player.falling = True
             self.player.z -= self.gravity_speed * delta_time
-            if is_negative(self.player.z):
-                self.player.deadcount += 1
-                if self.player.deadcount > 40:
-                    pass  # implement death/title screen
-                pass
+            # Reactivate this when death screen is done.
+            # if is_negative(self.player.z):
+            #     self.player.deadcount += 1
+            #     if self.player.deadcount > 40:
+            #         pass  # implement death/title screen
+            #     pass
         else:
             self.player.falling = False
 
