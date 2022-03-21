@@ -1,4 +1,3 @@
-from src.rendering.animations import Animation_manager
 import src.utils.isometric as isometric
 
 
@@ -22,7 +21,7 @@ class Tile_Manager:
             for y, row in enumerate(layer.data):
                 for x, tile in enumerate(row):
                     try:
-                        animation = level.tmxdata.get_tile_properties(x, y, z)['frames']
+                        animation = level.tmxdata.get_tile_properties(x, y, z)["frames"]
                         if animation == []:
                             animation = None
                     except TypeError:
@@ -31,8 +30,9 @@ class Tile_Manager:
                     if animation is None:
                         tile = level.tmxdata.get_tile_image(x, y, z)
                     else:
-                        tile = level.animations_manager.tile(animation, x, y, z, level.tmxdata)
-
+                        tile = level.animations_manager.tile(
+                            animation, x, y, z, level.tmxdata
+                        )
 
                     # Draw in-bounds entities
                     tasks = level.entity_manager.get_tasks(x, y, z)
@@ -56,7 +56,7 @@ class Tile_Manager:
                             collider = level.tmxdata.get_tile_properties(x, y, z)[
                                 "colliders"
                             ][0]
-                            
+
                             if collider.type is not None:
                                 level.movement.collision[z].append((x, y))
                                 level.movement.collision[z].append(collider.type)

@@ -1,4 +1,5 @@
 import math
+
 # Reactivate this when death screen is done.
 # from src.utils.tools import is_negative
 
