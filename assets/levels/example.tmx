@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="isometric" renderorder="right-down" width="12" height="10" tilewidth="20" tileheight="10" infinite="0" nextlayerid="9" nextobjectid="47">
+<map version="1.5" tiledversion="1.7.2" orientation="isometric" renderorder="right-down" width="12" height="10" tilewidth="20" tileheight="10" infinite="0" nextlayerid="9" nextobjectid="48">
  <editorsettings>
   <export target="example.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../textures/Game.tsx"/>
+ <tileset firstgid="21" source="../textures/gif test.tsx"/>
  <layer id="1" name="Tile Layer 1" width="12" height="10">
   <data encoding="csv">
 9,9,9,9,9,9,9,9,9,9,9,9,
@@ -11,7 +12,7 @@
 9,9,9,9,9,9,9,9,9,9,9,9,
 9,9,9,9,9,9,9,9,9,9,9,9,
 9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,9,9,
+9,9,9,9,9,9,9,9,9,9,21,9,
 9,9,9,9,9,9,9,9,9,9,9,9,
 9,9,9,9,9,9,9,9,9,9,9,9,
 9,9,9,9,9,9,9,9,9,4,0,9,
