@@ -30,7 +30,7 @@ class TileManager:
                 image = level.animations_manager.tile(
                     animation, str(task.obj.id), level.tmxdata, task.image
                 )
-            self.surface.blit(image, tools.offsetToCenter(pos))
+            self.surface.blit(image, pos)
 
         for z, layer in enumerate(level.tile_layers):
             level.movement_manager.collision.append([])
@@ -75,14 +75,12 @@ class TileManager:
                                     level.tmxdata,
                                     task.image,
                                 )
-                            self.surface.blit(image, tools.offsetToCenter(pos))
+                            self.surface.blit(image, pos)
 
                     if tile is not None:
                         self.surface.blit(
                             tile,
-                            tools.offsetToCenter(
-                                isometric.isometric(x, y, z, offset[0], offset[1])
-                            ),
+                            isometric.isometric(x, y, z, offset[0], offset[1]),
                             (0, 0, 20, 24),
                         )
 
@@ -122,9 +120,8 @@ class TileManager:
                 image = level.animations_manager.tile(
                     animation, str(task.obj.id), level.tmxdata, task.image
                 )
-            self.surface.blit(image, tools.offsetToCenter(pos))
+            self.surface.blit(image, pos)
 
-        # try:
         player_obj = level.entity_manager.entities[level.entity_manager.player]
         size = level.display.get_size()
         if player_obj.real_x <= padding:
@@ -135,7 +132,6 @@ class TileManager:
             offset = (offset[0], offset[1] + padding - player_obj.real_y)
         elif player_obj.real_y >= size[1] - padding:
             offset = (offset[0], offset[1] + size[1] - padding - player_obj.real_y)
-        # except TypeError:
-        #     pass
+        
 
         return offset
