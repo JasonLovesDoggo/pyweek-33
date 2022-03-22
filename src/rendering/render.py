@@ -16,7 +16,20 @@ class TileManager:
             if isinstance(task, player.Player):
                 task.real_x = pos[0]
                 task.real_y = pos[1]
-            self.surface.blit(task.image, pos)
+
+            try:
+                animation = task.obj.properties["frames"]
+                if animation == []:
+                    animation = None
+            except (TypeError, AttributeError):
+                animation = None
+
+            image = task.image
+            if animation is not None:
+                image = level.animations_manager.tile(
+                    animation, str(task.obj.id), level.tmxdata, task.image
+                )
+            self.surface.blit(image, pos)
 
         for z, layer in enumerate(level.tile_layers):
             level.movement_manager.collision.append([])
@@ -29,11 +42,10 @@ class TileManager:
                     except TypeError:
                         animation = None
 
-                    if animation is None:
-                        tile = level.tmxdata.get_tile_image(x, y, z)
-                    else:
+                    tile = level.tmxdata.get_tile_image(x, y, z)
+                    if animation is not None:
                         tile = level.animations_manager.tile(
-                            animation, x, y, z, level.tmxdata
+                            animation, f"{x}:{y}:{z}", level.tmxdata, tile
                         )
 
                     # Draw in-bounds entities
@@ -46,7 +58,23 @@ class TileManager:
                             if isinstance(task, player.Player):
                                 task.real_x = pos[0]
                                 task.real_y = pos[1]
-                            self.surface.blit(task.image, pos)
+
+                            try:
+                                animation = task.obj.properties["frames"]
+                                if animation == []:
+                                    animation = None
+                            except (TypeError, AttributeError):
+                                animation = None
+
+                            image = task.image
+                            if animation is not None:
+                                image = level.animations_manager.tile(
+                                    animation,
+                                    str(task.obj.id),
+                                    level.tmxdata,
+                                    task.image,
+                                )
+                            self.surface.blit(image, pos)
 
                     if tile is not None:
                         self.surface.blit(
@@ -65,7 +93,7 @@ class TileManager:
                                 level.movement_manager.collision[z].append(
                                     collider.type
                                 )
-                        except TypeError and KeyError:
+                        except KeyError:
                             pass
 
         # Draws out-of-bounds entities in front of in-bounds geometry.
@@ -78,7 +106,20 @@ class TileManager:
             if isinstance(task, player.Player):
                 task.real_x = pos[0]
                 task.real_y = pos[1]
-            self.surface.blit(task.image, pos)
+
+            try:
+                animation = task.obj.properties["frames"]
+                if animation == []:
+                    animation = None
+            except (TypeError, AttributeError):
+                animation = None
+
+            image = task.image
+            if animation is not None:
+                image = level.animations_manager.tile(
+                    animation, str(task.obj.id), level.tmxdata, task.image
+                )
+            self.surface.blit(image, pos)
 
         # try:
         player_obj = level.entity_manager.entities[level.entity_manager.player]

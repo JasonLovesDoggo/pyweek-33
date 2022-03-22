@@ -36,7 +36,7 @@ class Level:
 
         # Load entities
         self.entity_count = 0
-        self.entity_manager = entity.EntityManager()
+        self.entity_manager = entity.EntityManager(self.animations_manager)
         for layer in self.non_tile_layers:
             if isinstance(layer, pytmx.TiledObjectGroup):
                 for obj in layer:

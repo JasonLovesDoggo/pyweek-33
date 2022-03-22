@@ -59,13 +59,9 @@
    <object id="4" x="4" y="0.125" width="11.75" height="17.75"/>
   </objectgroup>
   <animation>
-   <frame tileid="15" duration="100"/>
-   <frame tileid="13" duration="100"/>
-   <frame tileid="14" duration="100"/>
-   <frame tileid="9" duration="100"/>
-   <frame tileid="11" duration="100"/>
-   <frame tileid="10" duration="100"/>
-   <frame tileid="12" duration="100"/>
+   <frame tileid="8" duration="100"/>
+   <frame tileid="8" duration="100"/>
+   <frame tileid="16" duration="100"/>
   </animation>
  </tile>
 </tileset>

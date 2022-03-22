@@ -7,7 +7,8 @@ log = getLogger(__name__)
 
 
 class EntityManager:
-    def __init__(self):
+    def __init__(self, animations_manager):
+        self.animations_manager = animations_manager
         self.entities = []
         self.player = None
 
@@ -48,33 +49,18 @@ class EntityManager:
         return outside_tiles
 
     def add_entity(self, entity):
-        log.debug(f"adding entity: {entity}")
-        for existing_entity in self.entities:
-            if existing_entity.z < entity.z:
-                self.entities.insert(self.entities.index(existing_entity), entity)
-                copy = self.entities
-                copy.reverse()
-                self.find_player_index()
-                return self.entities
-            elif existing_entity.z == entity.z:
-                if existing_entity.y < entity.y:
-                    self.entities.insert(self.entities.index(existing_entity), entity)
-                    self.find_player_index()
-                    return self.entities
-                elif existing_entity.y == entity.y:
-                    if existing_entity.x <= entity.x:
-                        self.entities.insert(
-                            self.entities.index(existing_entity), entity
-                        )
-                        self.find_player_index()
-                        return self.entities
-        # If it reaches this point, append to end.
         self.entities.append(entity)
+        self.find_player_index()
+        log.debug(f"Added entity: {entity}")
+
+        return self.entities
 
     def remove_entity(self, entity):
-        log.debug(f"removing entity: {entity}")
+        self.animations_manager.z_dict.pop(str(self.obj.id))
         self.entities.remove(entity)
         self.find_player_index()
+        log.debug(f"Removed entity: {entity}")
+
         return self.entities
 
 
