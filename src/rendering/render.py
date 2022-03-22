@@ -62,7 +62,9 @@ class TileManager:
 
                             if collider.type is not None:
                                 level.movement_manager.collision[z].append((x, y))
-                                level.movement_manager.collision[z].append(collider.type)
+                                level.movement_manager.collision[z].append(
+                                    collider.type
+                                )
                         except TypeError and KeyError:
                             pass
 

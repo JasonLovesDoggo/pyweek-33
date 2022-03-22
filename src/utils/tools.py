@@ -26,5 +26,6 @@ def instance_getter(to_count: list, instance: object) -> int:
             other.append(obj)
     return count, other
 
+
 def sizeString(string):
-    return f'{string[0]}x{string[1]}'
+    return f"{string[0]}x{string[1]}"

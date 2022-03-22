@@ -1,5 +1,6 @@
 from sys import stdout
 from src.utils.tools import HiddenPrints, sizeString
+
 with HiddenPrints():
     import pygame
     from pygame.locals import *
