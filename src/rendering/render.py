@@ -1,6 +1,5 @@
 import src.utils.isometric as isometric
 import src.gameobjects.player as player
-import src.utils.tools as tools
 
 
 class TileManager:
@@ -132,6 +131,5 @@ class TileManager:
             offset = (offset[0], offset[1] + padding - player_obj.real_y)
         elif player_obj.real_y >= size[1] - padding:
             offset = (offset[0], offset[1] + size[1] - padding - player_obj.real_y)
-        
 
         return offset
