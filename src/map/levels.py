@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from pytmx.util_pygame import load_pygame
 import pytmx
 from src.utils.tools import instance_getter
@@ -6,6 +8,7 @@ import src.utils.input as input
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
+log = getLogger(__name__)
 
 
 class Level:
@@ -16,12 +19,11 @@ class Level:
         self.filename = filename
         self.animations_manager = animations.Animation_manager()
         self.tmxdata = load_pygame(self.filename)
-        self.print_info = self.config["LOGGING"]["PRINTLEVELINFO"].lower() == "true"
         self.tile_layers, self.non_tile_layers = instance_getter(
             self.tmxdata.layers, pytmx.TiledTileLayer
         )
-        if self.print_info:
-            print(
+
+        log.info(
                 f"""Loaded map: {self.tmxdata.filename}
             - Tile size: {self.tmxdata.tilewidth}x{self.tmxdata.tileheight}
             - Map size: {self.tmxdata.width}x{self.tmxdata.height}x{len(self.tile_layers)}
@@ -55,8 +57,8 @@ class Level:
                         )
                     )
                     self.entity_count += 1
-        if self.print_info:
-            print(
+
+        log.info(
                 f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
             )
 
@@ -65,6 +67,7 @@ class Level:
         self.renderer = render.Tile_Manager(display)
 
     def switch_level(self, filename):
+        log.debug(f'switching level to {filename} from {self.filename}')
         config = self.config
         display = self.display
         movementFuncs = self.movement.func
