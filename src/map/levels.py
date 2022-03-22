@@ -8,6 +8,8 @@ import src.utils.input as input
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
+import src.utils.audio as audio
+
 
 log = getLogger(__name__)
 
@@ -63,19 +65,21 @@ class Level:
             f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
         )
 
-        self.movement = input.Movement(self.entity_manager)
+        self.movement_manager = input.MovementManager(self.entity_manager)
 
-        self.renderer = render.Tile_Manager(display)
+        self.audio_manager = audio.AudioManager()
+
+        self.render_manager = render.TileManager(display)
 
     def switch_level(self, filename):
         log.debug(f"switching level to {filename} from {self.filename}")
         config = self.config
         display = self.display
-        movementFuncs = self.movement.func
+        movementFuncs = self.movement_manager.func
 
         newClass = Level(filename, config, display)
 
-        newClass.movement.func = movementFuncs
+        newClass.movement_manager.func = movementFuncs
         return newClass
 
     def update(self):

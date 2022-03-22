@@ -1,73 +1,40 @@
 from sys import stdout
-
-from pygame import mixer
-
-from src.utils.tools import HiddenPrints
-
+from src.utils.tools import HiddenPrints, sizeString
 with HiddenPrints():
     import pygame
     from pygame.locals import *
 import configparser
-import src.utils.input as game_input
 import src.map.levels as levels
 import logging
 
-del HiddenPrints
-
-# Configure the logger
-
-logging.basicConfig(
-    format="%(asctime)s - [%(name)s | %(filename)s:%(lineno)d] - %(levelname)s - %(message)s",
-    filename="game.log",
-    filemode="a",
-    level=logging.INFO,  # Keep at logging.INFO unless you want to see all events then change to LOGGING.DEBUG
-)
-
-log = logging.getLogger(__name__)
-
-log.addHandler(logging.StreamHandler(stdout))
 
 # Get game configs.
 config = configparser.ConfigParser()
 config.read("assets/configs/config.ini")
 config.sections()
 
+# Configure the logger
+logging.basicConfig(
+    format="%(asctime)s - [%(name)s | %(filename)s:%(lineno)d] - %(levelname)s - %(message)s",
+    filename="game.log",
+    filemode="w",
+    level=getattr(logging, str(config["DEBUG"]["LOGGINGLEVEL"]).upper()),
+)
+log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler(stdout))
 
-# mixer.music.load('Music File.mp3')
-# mixer.music.play()
-# mixer.music.pause()
-# mixer.music.stop()
-
-"""
-
-Valid cmds are 
-load
-unload
-play
-rewind
-stop
-pause
-unpause
-fadeout
-set_volume
-get_volume
-get_busy
-set_pos
-get_pos
-queue
-set_endevent
-get_endevent"""
+log.info("Starting game.")
+log.info("Loaded configs.")
 
 
 def setup():
-    log.info("Loaded configs.")
     log.info("Successfully initialized %s pygame modules, %s failed." % (pygame.init()))
     clock = pygame.time.Clock()
 
     # Create windows and surfaces
     size = (int(config["WINDOW"]["DEFAULTX"]), int(config["WINDOW"]["DEFAULTY"]))
 
-    log.info(f"Creating game displays. \tWindow size: {size}")
+    log.info(f"Creating game displays, window size: {sizeString(size)}")
     pygame.display.set_caption(config["WINDOW"]["TITLE"])
     screen = pygame.display.set_mode(
         size
@@ -96,13 +63,13 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
     offset = (150, 150)
     log.info("Starting game loop.")
     while True:
-        offset = level.renderer.render_tiles_and_entities(
+        offset = level.render_manager.render_tiles_and_entities(
             level, offset, int(config["SETTINGS"]["BOXCAMERAPADDING"])
         )
 
         for event in pygame.event.get():
             if event.type == QUIT:  # Quit routine.
-                log.info("Quitting...")
+                log.info("Quitting game.")
                 pygame.quit()
                 quit()
             elif event.type == KEYDOWN:
@@ -122,7 +89,7 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
                 level.update()
 
         # Movement system
-        level.movement.run(
+        level.movement_manager.run(
             pygame.key.get_pressed(), level.entity_manager, delta_time, offset
         )
 
@@ -136,20 +103,15 @@ def main():
 
     delta_time = 0
 
-    # inititailize the audio mixer
-
-    log.info("initializing audio mixer...")
-    mixer.init()
-
     # Add key callbacks
-    level.movement.add(pygame.K_UP, game_input.Movement.UP)
-    level.movement.add(pygame.K_w, game_input.Movement.UP)
-    level.movement.add(pygame.K_DOWN, game_input.Movement.DOWN)
-    level.movement.add(pygame.K_s, game_input.Movement.DOWN)
-    level.movement.add(pygame.K_LEFT, game_input.Movement.LEFT)
-    level.movement.add(pygame.K_a, game_input.Movement.LEFT)
-    level.movement.add(pygame.K_RIGHT, game_input.Movement.RIGHT)
-    level.movement.add(pygame.K_d, game_input.Movement.RIGHT)
+    level.movement_manager.add(pygame.K_UP, level.movement_manager.UP)
+    level.movement_manager.add(pygame.K_w, level.movement_manager.UP)
+    level.movement_manager.add(pygame.K_DOWN, level.movement_manager.DOWN)
+    level.movement_manager.add(pygame.K_s, level.movement_manager.DOWN)
+    level.movement_manager.add(pygame.K_LEFT, level.movement_manager.LEFT)
+    level.movement_manager.add(pygame.K_a, level.movement_manager.LEFT)
+    level.movement_manager.add(pygame.K_RIGHT, level.movement_manager.RIGHT)
+    level.movement_manager.add(pygame.K_d, level.movement_manager.RIGHT)
 
     run_game(level, clock, size, screen, debug_font, delta_time)
 

@@ -2,7 +2,7 @@ import src.utils.isometric as isometric
 import src.gameobjects.player as player
 
 
-class Tile_Manager:
+class TileManager:
     def __init__(self, surface) -> None:
         self.surface = surface
         pass
@@ -19,7 +19,7 @@ class Tile_Manager:
             self.surface.blit(task.image, pos)
 
         for z, layer in enumerate(level.tile_layers):
-            level.movement.collision.append([])
+            level.movement_manager.collision.append([])
             for y, row in enumerate(layer.data):
                 for x, tile in enumerate(row):
                     try:
@@ -61,8 +61,8 @@ class Tile_Manager:
                             ][0]
 
                             if collider.type is not None:
-                                level.movement.collision[z].append((x, y))
-                                level.movement.collision[z].append(collider.type)
+                                level.movement_manager.collision[z].append((x, y))
+                                level.movement_manager.collision[z].append(collider.type)
                         except TypeError and KeyError:
                             pass
 
