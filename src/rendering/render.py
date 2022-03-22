@@ -80,7 +80,9 @@ class TileManager:
                     if tile is not None:
                         self.surface.blit(
                             tile,
-                            tools.offsetToCenter(isometric.isometric(x, y, z, offset[0], offset[1])),
+                            tools.offsetToCenter(
+                                isometric.isometric(x, y, z, offset[0], offset[1])
+                            ),
                             (0, 0, 20, 24),
                         )
 
