@@ -4,8 +4,8 @@
   <export target="example.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="../textures/dev/dev_animation_test.tsx"/>
- <tileset firstgid="16" source="../textures/env/env_ground.tsx"/>
- <tileset firstgid="18" source="../textures/env/env_stairs.tsx"/>
+ <tileset firstgid="16" source="../textures/enviroronment/env_ground.tsx"/>
+ <tileset firstgid="18" source="../textures/enviroronment/env_stairs.tsx"/>
  <tileset firstgid="22" source="../textures/player/player.tsx"/>
  <layer id="9" name="Tile Layer 1" width="12" height="10">
   <data encoding="csv">
