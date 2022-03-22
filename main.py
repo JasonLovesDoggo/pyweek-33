@@ -21,7 +21,6 @@ logging.basicConfig(
     filename="game.log",
     filemode="a",
     level=logging.INFO,  # Keep at logging.INFO unless you want to see all events then change to LOGGING.DEBUG
-
 )
 
 log = logging.getLogger(__name__)
@@ -34,11 +33,14 @@ config.read("assets/configs/config.ini")
 config.sections()
 
 
-#mixer.music.load('Music File.mp3')
-#mixer.music.play()
-#mixer.music.pause()
-#mixer.music.stop()
-"""Valid cmds are 
+# mixer.music.load('Music File.mp3')
+# mixer.music.play()
+# mixer.music.pause()
+# mixer.music.stop()
+
+"""
+
+Valid cmds are 
 load
 unload
 play
@@ -100,7 +102,7 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
 
         for event in pygame.event.get():
             if event.type == QUIT:  # Quit routine.
-                log.info('Quitting...')
+                log.info("Quitting...")
                 pygame.quit()
                 quit()
             elif event.type == KEYDOWN:
@@ -112,7 +114,7 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
                     else:
                         config["SETTINGS"]["SHOWFPS"] = "true"
             elif (
-                    event.type == pygame.WINDOWRESIZED
+                event.type == pygame.WINDOWRESIZED
             ):  # If window is resized, resize the display surface.
                 size = pygame.display.get_surface().get_size()
                 smaller = size[1] if size[1] < size[0] else size[0]
@@ -136,7 +138,7 @@ def main():
 
     # inititailize the audio mixer
 
-    log.info('initializing audio mixer...')
+    log.info("initializing audio mixer...")
     mixer.init()
 
     # Add key callbacks

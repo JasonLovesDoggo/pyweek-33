@@ -8,6 +8,7 @@ import src.utils.input as input
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
+
 log = getLogger(__name__)
 
 
@@ -24,12 +25,12 @@ class Level:
         )
 
         log.info(
-                f"""Loaded map: {self.tmxdata.filename}
+            f"""Loaded map: {self.tmxdata.filename}
             - Tile size: {self.tmxdata.tilewidth}x{self.tmxdata.tileheight}
             - Map size: {self.tmxdata.width}x{self.tmxdata.height}x{len(self.tile_layers)}
             - Map version: {self.tmxdata.version}
             - Tiled version: {self.tmxdata.tiledversion}\n"""
-            )
+        )
 
         # Load entities
         self.entity_count = 0
@@ -59,15 +60,15 @@ class Level:
                     self.entity_count += 1
 
         log.info(
-                f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
-            )
+            f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
+        )
 
         self.movement = input.Movement(self.entity_manager)
 
         self.renderer = render.Tile_Manager(display)
 
     def switch_level(self, filename):
-        log.debug(f'switching level to {filename} from {self.filename}')
+        log.debug(f"switching level to {filename} from {self.filename}")
         config = self.config
         display = self.display
         movementFuncs = self.movement.func

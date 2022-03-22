@@ -2,6 +2,7 @@ import math
 from logging import getLogger
 
 import src.gameobjects.player as player
+
 log = getLogger(__name__)
 
 
@@ -47,7 +48,7 @@ class EntityManager:
         return outside_tiles
 
     def add_entity(self, entity):
-        log.debug(f'adding entity: {entity}')
+        log.debug(f"adding entity: {entity}")
         for existing_entity in self.entities:
             if existing_entity.z < entity.z:
                 self.entities.insert(self.entities.index(existing_entity), entity)
@@ -71,7 +72,7 @@ class EntityManager:
         self.entities.append(entity)
 
     def remove_entity(self, entity):
-        log.debug(f'removing entity: {entity}')
+        log.debug(f"removing entity: {entity}")
         self.entities.remove(entity)
         self.find_player_index()
         return self.entities

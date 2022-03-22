@@ -80,7 +80,7 @@ class Movement:
         pass
 
     def UP(self, delta_time):
-        log.debug('registered a up movement')
+        log.debug("registered a up movement")
         local_speed = self.player_speed * delta_time
         target = (self.player.x_floor(), math.floor(self.player.y - local_speed))
         if target not in self.player_collision_layer:
@@ -98,7 +98,7 @@ class Movement:
                 pass
 
     def DOWN(self, delta_time):
-        log.debug('registered a down movement')
+        log.debug("registered a down movement")
         local_speed = self.player_speed * delta_time
         target = (self.player.x_floor(), math.floor(self.player.y + local_speed))
         if target not in self.player_collision_layer:
@@ -116,7 +116,7 @@ class Movement:
                 pass
 
     def LEFT(self, delta_time):
-        log.debug('registered a left movement')
+        log.debug("registered a left movement")
         local_speed = self.player_speed * delta_time
         target = (math.floor(self.player.x - local_speed), self.player.y_floor())
         if target not in self.player_collision_layer:
@@ -134,7 +134,7 @@ class Movement:
                 pass
 
     def RIGHT(self, delta_time):
-        log.debug('registered a right movement')
+        log.debug("registered a right movement")
         local_speed = self.player_speed * delta_time
         target = (math.floor(self.player.x + local_speed), self.player.y_floor())
         if target not in self.player_collision_layer:
