@@ -1,51 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="isometric" renderorder="right-down" width="12" height="10" tilewidth="20" tileheight="10" infinite="0" nextlayerid="9" nextobjectid="48">
+<map version="1.5" tiledversion="1.7.2" orientation="isometric" renderorder="right-down" width="12" height="10" tilewidth="20" tileheight="10" infinite="0" nextlayerid="15" nextobjectid="50">
  <editorsettings>
   <export target="example.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../textures/Game.tsx"/>
- <tileset firstgid="21" source="../textures/gif test.tsx"/>
- <layer id="1" name="Tile Layer 1" width="12" height="10">
+ <tileset firstgid="1" source="../textures/dev/dev_animation_test.tsx"/>
+ <tileset firstgid="16" source="../textures/env/env_ground.tsx"/>
+ <tileset firstgid="18" source="../textures/env/env_stairs.tsx"/>
+ <tileset firstgid="22" source="../textures/player/player.tsx"/>
+ <layer id="9" name="Tile Layer 1" width="12" height="10">
   <data encoding="csv">
-9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,21,9,
-9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,9,9,9,
-9,9,9,9,9,9,9,9,9,4,0,9,
-9,9,9,9,9,9,9,9,9,0,0,9
+12,12,12,12,12,12,12,12,12,12,12,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,17,17,17,17,17,17,17,17,17,17,12,
+12,12,12,12,12,12,12,12,12,12,12,12
 </data>
  </layer>
- <objectgroup id="7" name="Players">
-  <object id="46" type="player" gid="17" x="75.5" y="75.5" width="20" height="24"/>
+ <objectgroup id="14" name="player" offsetx="0" offsety="-14">
+  <object id="48" type="player" gid="29" x="72.1311" y="38.1095" width="20" height="24"/>
  </objectgroup>
- <layer id="3" name="Tile Layer 2" width="12" height="10" offsetx="0" offsety="-14">
+ <layer id="10" name="Tile Layer 2" width="12" height="10" offsetx="0" offsety="-14">
   <data encoding="csv">
-0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,1,0,0,0,
-0,0,0,0,9,9,9,9,9,2,0,0,
-0,0,0,3,9,9,9,2,0,0,0,0,
-0,0,0,3,9,9,9,2,0,0,0,0,
-0,0,0,0,9,4,4,9,0,0,0,0,
+12,11,10,9,8,7,6,5,4,3,2,1,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,9,2,0,0,0,0,0,0,
-0,0,9,9,9,2,0,0,0,0,0,0
+17,17,17,0,0,0,0,0,0,0,0,0,
+17,17,0,0,0,0,0,0,0,0,0,0,
+17,0,0,0,0,18,0,0,0,0,0,18,
+17,19,0,0,0,17,0,0,17,17,17,17,
+17,0,0,0,20,17,19,0,0,0,0,21,
+17,0,0,0,20,16,19,0,0,0,0,0,
+17,0,0,0,0,21,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="Tile Layer 3" width="12" height="10" offsetx="0" offsety="-28">
+ <layer id="13" name="Tile Layer 3" width="12" height="10" offsetx="0" offsety="-28">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,2,0,0,0,0,0,0,0,
+19,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,1,0,0,0,0,0,0,0,
-0,0,0,0,4,0,0,0,0,0,0,0,
+0,0,0,0,0,0,20,19,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0
 </data>

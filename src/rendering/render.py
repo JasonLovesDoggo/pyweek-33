@@ -21,7 +21,7 @@ class TileManager:
                 animation = task.obj.properties["frames"]
                 if animation == []:
                     animation = None
-            except (TypeError, AttributeError):
+            except (TypeError, AttributeError, KeyError):
                 animation = None
 
             image = task.image
@@ -63,7 +63,7 @@ class TileManager:
                                 animation = task.obj.properties["frames"]
                                 if animation == []:
                                     animation = None
-                            except (TypeError, AttributeError):
+                            except (TypeError, AttributeError, KeyError):
                                 animation = None
 
                             image = task.image
@@ -93,7 +93,7 @@ class TileManager:
                                 level.movement_manager.collision[z].append(
                                     collider.type
                                 )
-                        except KeyError:
+                        except (KeyError, TypeError):
                             pass
 
         # Draws out-of-bounds entities in front of in-bounds geometry.
@@ -111,7 +111,7 @@ class TileManager:
                 animation = task.obj.properties["frames"]
                 if animation == []:
                     animation = None
-            except (TypeError, AttributeError):
+            except (TypeError, AttributeError, KeyError):
                 animation = None
 
             image = task.image
