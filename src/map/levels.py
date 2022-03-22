@@ -9,6 +9,7 @@ import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
 import src.utils.audio as audio
+import math
 
 
 log = getLogger(__name__)
@@ -46,16 +47,16 @@ class Level:
                         type = ""
                     self.entity_manager.add_entity(
                         entity.Entity(
-                            (obj.x + 5) / 10,
-                            obj.y / 10,
-                            (layer.offsety * -1 / 14) + 1,
+                            obj.x / 10 - 1,
+                            math.sqrt(obj.y) - 1,
+                            (layer.offsety * -1 / 14),
                             obj,
                         )
                         if type != "player"
                         else player.Player(
-                            (obj.x + 5) / 10,
-                            obj.y / 10,
-                            (layer.offsety * -1 / 14) + 1,
+                            obj.x / 10,
+                            math.sqrt(obj.y),
+                            (layer.offsety * -1 / 14),
                             obj,
                         )
                     )

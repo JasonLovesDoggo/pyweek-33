@@ -1,5 +1,6 @@
 import src.utils.isometric as isometric
 import src.gameobjects.player as player
+import src.utils.tools as tools
 
 
 class TileManager:
@@ -29,7 +30,7 @@ class TileManager:
                 image = level.animations_manager.tile(
                     animation, str(task.obj.id), level.tmxdata, task.image
                 )
-            self.surface.blit(image, pos)
+            self.surface.blit(image, tools.offsetToCenter(pos))
 
         for z, layer in enumerate(level.tile_layers):
             level.movement_manager.collision.append([])
@@ -74,12 +75,12 @@ class TileManager:
                                     level.tmxdata,
                                     task.image,
                                 )
-                            self.surface.blit(image, pos)
+                            self.surface.blit(image, tools.offsetToCenter(pos))
 
                     if tile is not None:
                         self.surface.blit(
                             tile,
-                            isometric.isometric(x, y, z, offset[0], offset[1]),
+                            tools.offsetToCenter(isometric.isometric(x, y, z, offset[0], offset[1])),
                             (0, 0, 20, 24),
                         )
 
@@ -119,7 +120,7 @@ class TileManager:
                 image = level.animations_manager.tile(
                     animation, str(task.obj.id), level.tmxdata, task.image
                 )
-            self.surface.blit(image, pos)
+            self.surface.blit(image, tools.offsetToCenter(pos))
 
         # try:
         player_obj = level.entity_manager.entities[level.entity_manager.player]

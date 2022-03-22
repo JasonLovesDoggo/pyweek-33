@@ -89,6 +89,10 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
                 level.display = pygame.Surface((smaller / 3, smaller / 3))
                 level.update()
 
+        if config['DEBUG']['RELOADONFALL'].lower() == 'true':
+            if level.movement_manager.player.z < -5:
+                level = level.switch_level(level.filename)
+
         # Movement system
         level.movement_manager.run(
             pygame.key.get_pressed(), level.entity_manager, delta_time, offset
@@ -101,6 +105,8 @@ def main():
     clock, size, screen, display, debug_font = setup()
 
     level = levels.Level("assets/levels/example.tmx", config, display)
+
+    # offset = level.movement_manager.player
 
     delta_time = 0
 

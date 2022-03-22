@@ -29,3 +29,6 @@ def instance_getter(to_count: list, instance: object) -> int:
 
 def sizeString(string):
     return f"{string[0]}x{string[1]}"
+
+def offsetToCenter(loc: tuple, size = (20, 24)):
+    return (loc[0] - size[0] / 2, loc[1] - size[0] / 2)
