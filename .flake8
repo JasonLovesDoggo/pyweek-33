@@ -1,5 +1,5 @@
 [flake8]
-ignore = E501, F405, W503, E731, F403
+ignore = E501, F405, W503, E731, F403, W291
 exclude =
     .git,
     __pycache__,

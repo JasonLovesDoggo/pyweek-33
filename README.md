@@ -23,7 +23,13 @@
  #### Audio Engineers
  - **Wem** | `No GitHub` 
  - **Flarieanie** | `No GitHub` 
-                                                        
+ 
+
+ ## Basic controls (TEMP)
+- reset the level: f1
+- toggle fps counter: f2
+  
+
 
  ## installation instructions 
 1. Install [python](https://www.python.org/downloads/)

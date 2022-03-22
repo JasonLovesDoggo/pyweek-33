@@ -1,3 +1,5 @@
+from logging import getLogger
+
 from pytmx.util_pygame import load_pygame
 import pytmx
 from src.utils.tools import instance_getter
@@ -6,6 +8,8 @@ import src.utils.input as input
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
+
+log = getLogger(__name__)
 
 
 class Level:
@@ -16,18 +20,17 @@ class Level:
         self.filename = filename
         self.animations_manager = animations.Animation_manager()
         self.tmxdata = load_pygame(self.filename)
-        self.print_info = self.config["LOGGING"]["PRINTLEVELINFO"].lower() == "true"
         self.tile_layers, self.non_tile_layers = instance_getter(
             self.tmxdata.layers, pytmx.TiledTileLayer
         )
-        if self.print_info:
-            print(
-                f"""Loaded map: {self.tmxdata.filename}
+
+        log.info(
+            f"""Loaded map: {self.tmxdata.filename}
             - Tile size: {self.tmxdata.tilewidth}x{self.tmxdata.tileheight}
             - Map size: {self.tmxdata.width}x{self.tmxdata.height}x{len(self.tile_layers)}
             - Map version: {self.tmxdata.version}
             - Tiled version: {self.tmxdata.tiledversion}\n"""
-            )
+        )
 
         # Load entities
         self.entity_count = 0
@@ -55,16 +58,17 @@ class Level:
                         )
                     )
                     self.entity_count += 1
-        if self.print_info:
-            print(
-                f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
-            )
+
+        log.info(
+            f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
+        )
 
         self.movement = input.Movement(self.entity_manager)
 
         self.renderer = render.Tile_Manager(display)
 
     def switch_level(self, filename):
+        log.debug(f"switching level to {filename} from {self.filename}")
         config = self.config
         display = self.display
         movementFuncs = self.movement.func

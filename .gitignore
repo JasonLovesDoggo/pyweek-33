@@ -102,3 +102,8 @@ ENV/
 
 #ffmpeg
 \lib\ffmpeg
+
+
+# logs
+game.log
+# would cause merge conflicts
