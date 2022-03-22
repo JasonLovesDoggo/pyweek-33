@@ -45,20 +45,15 @@ class Level:
                         type = obj.type.lower()
                     except AttributeError:
                         type = ""
+                    x, y, z = (
+                        obj.x / 10 - 1,
+                        math.sqrt(obj.y) - 1,
+                        (layer.offsety * -1 / 14),
+                    )
                     self.entity_manager.add_entity(
-                        entity.Entity(
-                            obj.x / 10 - 1,
-                            math.sqrt(obj.y) - 1,
-                            (layer.offsety * -1 / 14),
-                            obj,
-                        )
+                        entity.Entity(x, y, z, obj)
                         if type != "player"
-                        else player.Player(
-                            obj.x / 10,
-                            math.sqrt(obj.y),
-                            (layer.offsety * -1 / 14),
-                            obj,
-                        )
+                        else player.Player(x, y, z, obj)
                     )
                     self.entity_count += 1
 
