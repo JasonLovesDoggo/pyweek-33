@@ -45,7 +45,11 @@ class Level:
                         type = obj.type.lower()
                     except AttributeError:
                         type = ""
-                    x, y, z = obj.x / 10 - 1, math.sqrt(obj.y) - 1, (layer.offsety * -1 / 14)
+                    x, y, z = (
+                        obj.x / 10 - 1,
+                        math.sqrt(obj.y) - 1,
+                        (layer.offsety * -1 / 14),
+                    )
                     self.entity_manager.add_entity(
                         entity.Entity(x, y, z, obj)
                         if type != "player"
