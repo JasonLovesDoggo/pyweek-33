@@ -82,9 +82,9 @@ class TileManager:
                 )
 
                 try:
-                    collider = level.tmxdata.get_tile_properties(x, y, z)[
-                        "colliders"
-                    ][0]
+                    collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][
+                        0
+                    ]
 
                     if collider.type is not None:
                         try:
@@ -92,9 +92,7 @@ class TileManager:
                         except IndexError:
                             level.movement_manager.collision.append([])
                         level.movement_manager.collision[z].append((x, y))
-                        level.movement_manager.collision[z].append(
-                            collider.type
-                        )
+                        level.movement_manager.collision[z].append(collider.type)
                 except (KeyError, TypeError):
                     pass
 

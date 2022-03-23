@@ -35,6 +35,7 @@ def sizeString(string):
 def offsetToCenter(loc: tuple, size=(20, 24)):
     return (loc[0], loc[1] - size[0] / 2)
 
+
 def quicksort(array):
     if len(array) < 2:
         return array
@@ -53,6 +54,7 @@ def quicksort(array):
 
     return quicksort(low) + same + quicksort(high)
 
+
 def sortFartestToClosest(tile_layers, tmxdata, reverse=False):
     scores = []
     for z, layer in enumerate(tile_layers):
@@ -63,4 +65,3 @@ def sortFartestToClosest(tile_layers, tmxdata, reverse=False):
     out = [item[1] for item in quicksort(scores)]
 
     return out.reverse() if reverse else out
-
