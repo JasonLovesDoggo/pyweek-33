@@ -10,6 +10,7 @@ import src.gameobjects.player as player
 import src.rendering.animations as animations
 import src.utils.audio as audio
 import math
+import src.utils.tools as tools
 
 log = getLogger(__name__)
 
@@ -34,6 +35,8 @@ class Level:
             - Tiled version: {self.tmxdata.tiledversion}\n"""
         )
 
+        self.tiles_sorted = tools.sortFartestToClosest(self.tile_layers, self.tmxdata)
+
         # Load entities
         self.entity_count = 0
         self.entity_manager = entity.EntityManager(self.animations_manager)
@@ -44,6 +47,7 @@ class Level:
                         type = obj.type.lower()
                     except AttributeError:
                         type = ""
+                    # Don't even ask me what this shit is
                     x, y, z = (
                         obj.x / 10 - 1,
                         math.sqrt(obj.y) - 1,
