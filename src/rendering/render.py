@@ -1,6 +1,5 @@
 import src.utils.isometric as isometric
 import src.gameobjects.player as player
-import src.utils.tools as tools
 
 
 class TileManager:
