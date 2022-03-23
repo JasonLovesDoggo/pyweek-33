@@ -89,7 +89,9 @@ def run_game(level, clock, size, screen, debug_font, delta_time):
                 level.display = pygame.Surface((smaller / 3, smaller / 3))
                 level.update()
 
-        if config["DEBUG"]["RELOADONFALL"].lower() == "true":
+        if (
+            config["DEBUG"]["RELOADONFALL"].lower() == "true"
+        ):  # this can also be used for death screen
             if level.movement_manager.player.z < -5:
                 level = level.switch_level(level.filename)
 

@@ -11,7 +11,6 @@ class Player:
         self.x_floor = lambda: math.floor(self.x)
         self.y_floor = lambda: math.floor(self.y)
         self.z_floor = lambda: math.floor(self.z)
-        self.deadcount: int = 0
 
         self.obj = obj
         self.image = obj.image

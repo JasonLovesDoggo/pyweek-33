@@ -4,13 +4,12 @@ from pytmx.util_pygame import load_pygame
 import pytmx
 from src.utils.tools import instance_getter
 import src.gameobjects.entity as entity
-import src.utils.input as input
+import src.utils.input as game_input  # input shadows built-in input method
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
 import src.utils.audio as audio
 import math
-
 
 log = getLogger(__name__)
 
@@ -61,7 +60,7 @@ class Level:
             f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
         )
 
-        self.movement_manager = input.MovementManager(self.entity_manager)
+        self.movement_manager = game_input.MovementManager(self.entity_manager)
 
         self.audio_manager = audio.AudioManager()
 
@@ -79,4 +78,4 @@ class Level:
         return newClass
 
     def update(self):
-        self.renderer.surface = self.display
+        self.renderer.surface = self.display  # renderer doesn't exist

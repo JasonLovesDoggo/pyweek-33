@@ -19,7 +19,7 @@ class TileManager:
 
             try:
                 animation = task.obj.properties["frames"]
-                if animation == []:
+                if not animation:
                     animation = None
             except (TypeError, AttributeError, KeyError):
                 animation = None
@@ -37,7 +37,7 @@ class TileManager:
                 for x, tile in enumerate(row):
                     try:
                         animation = level.tmxdata.get_tile_properties(x, y, z)["frames"]
-                        if animation == []:
+                        if not animation:
                             animation = None
                     except TypeError:
                         animation = None
@@ -61,7 +61,7 @@ class TileManager:
 
                             try:
                                 animation = task.obj.properties["frames"]
-                                if animation == []:
+                                if not animation:
                                     animation = None
                             except (TypeError, AttributeError, KeyError):
                                 animation = None
@@ -109,7 +109,7 @@ class TileManager:
 
             try:
                 animation = task.obj.properties["frames"]
-                if animation == []:
+                if not animation:
                     animation = None
             except (TypeError, AttributeError, KeyError):
                 animation = None
