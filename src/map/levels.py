@@ -1,15 +1,16 @@
 from logging import getLogger
+import pygame
 
 from pytmx.util_pygame import load_pygame
 import pytmx
-from src.utils.tools import instance_getter
+import src.utils.tools as tools
 import src.gameobjects.entity as entity
 import src.utils.input as input
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
 import src.utils.audio as audio
-import math
+import src.utils.isometric as isometric
 
 
 log = getLogger(__name__)
@@ -23,7 +24,7 @@ class Level:
         self.filename = filename
         self.animations_manager = animations.Animation_manager()
         self.tmxdata = load_pygame(self.filename)
-        self.tile_layers, self.non_tile_layers = instance_getter(
+        self.tile_layers, self.non_tile_layers = tools.instance_getter(
             self.tmxdata.layers, pytmx.TiledTileLayer
         )
 
@@ -45,11 +46,14 @@ class Level:
                         type = obj.type.lower()
                     except AttributeError:
                         type = ""
-                    x, y, z = (
-                        obj.x / 10 - 1,
-                        math.sqrt(obj.y) - 1,
-                        (layer.offsety * -1 / 14),
+
+                    x, y = (obj.x - layer.offsetx) / 10 - 1, (
+                        (obj.y - layer.offsety) / 10
                     )
+                    z = layer.offsety * -1 / 14
+                    # print(isometric.isometric(16, 4, layer.offsety * -1 / 14))
+                    print(isometric.rev_isometric(x, y, z))
+
                     self.entity_manager.add_entity(
                         entity.Entity(x, y, z, obj)
                         if type != "player"
