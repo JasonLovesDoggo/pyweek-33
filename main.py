@@ -6,6 +6,7 @@ with HiddenPrints():
     from pygame.locals import *
 import configparser
 import src.map.levels as levels
+import src.utils.input as input
 import logging
 
 
@@ -111,14 +112,14 @@ def main():
     delta_time = 0
 
     # Add key callbacks
-    level.movement_manager.add(pygame.K_UP, level.movement_manager.UP)
-    level.movement_manager.add(pygame.K_w, level.movement_manager.UP)
-    level.movement_manager.add(pygame.K_DOWN, level.movement_manager.DOWN)
-    level.movement_manager.add(pygame.K_s, level.movement_manager.DOWN)
-    level.movement_manager.add(pygame.K_LEFT, level.movement_manager.LEFT)
-    level.movement_manager.add(pygame.K_a, level.movement_manager.LEFT)
-    level.movement_manager.add(pygame.K_RIGHT, level.movement_manager.RIGHT)
-    level.movement_manager.add(pygame.K_d, level.movement_manager.RIGHT)
+    level.movement_manager.add(pygame.K_UP, input.UP)
+    level.movement_manager.add(pygame.K_w, input.UP)
+    level.movement_manager.add(pygame.K_DOWN, input.DOWN)
+    level.movement_manager.add(pygame.K_s, input.DOWN)
+    level.movement_manager.add(pygame.K_LEFT, input.LEFT)
+    level.movement_manager.add(pygame.K_a, input.LEFT)
+    level.movement_manager.add(pygame.K_RIGHT, input.RIGHT)
+    level.movement_manager.add(pygame.K_d, input.RIGHT)
 
     run_game(level, clock, size, screen, debug_font, delta_time)
 
