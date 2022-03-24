@@ -53,9 +53,9 @@ class Level:
                         layer.offsety * -1 / 14,
                     )
 
-                    if type != "player":
+                    if type == "player":
                         self.entity_manager.add_entity(player.Player(x, y, z, obj))
-                    elif type != "enemy":
+                    elif type == "enemy":
                         self.entity_manager.add_entity(enemy.Enemy(x, y, z, obj))
                     else:
                         self.entity_manager.add_entity(entity.Entity(x, y, z, obj))
