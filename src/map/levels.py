@@ -15,9 +15,10 @@ log = getLogger(__name__)
 
 
 class Level:
-    def __init__(self, filename, config, display) -> None:
+    def __init__(self, filename, config, current) -> None:
         # Load map
-        self.display = display
+        self.current = current
+        self.display = current["surface"]
         self.config = config
         self.filename = filename
         self.animations_manager = animations.Animation_manager()
@@ -69,7 +70,7 @@ class Level:
 
         self.audio_manager = audio.AudioManager()
 
-        self.render_manager = render.TileManager(display)
+        self.render_manager = render.TileManager(self.display)
 
     def switch_level(self, filename):
         log.debug(f"switching level to {filename} from {self.filename}")
@@ -83,4 +84,5 @@ class Level:
         return newClass
 
     def update(self):
+        self.display = self.current["surface"]
         self.renderer.surface = self.display
