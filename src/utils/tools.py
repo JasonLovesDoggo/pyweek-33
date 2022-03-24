@@ -1,5 +1,6 @@
 import os
 import sys
+from random import randint
 
 
 def is_negative(num):
@@ -35,5 +36,37 @@ def offsetToCenter(loc: tuple, size=(20, 24)):
     return (loc[0], loc[1] - size[0] / 2)
 
 
+
 def centerToOffset(loc: tuple, size=(20, 24)):
     return (loc[0] - size[0] / 2, loc[1] - size[1] / 2)
+
+
+def quicksort(array):
+    if len(array) < 2:
+        return array
+
+    low, same, high = [], [], []
+
+    pivot = array[randint(0, len(array) - 1)]
+
+    for item in array:
+        if item[0] < pivot[0]:
+            low.append(item)
+        elif item[0] == pivot[0]:
+            same.append(item)
+        elif item[0] > pivot[0]:
+            high.append(item)
+
+    return quicksort(low) + same + quicksort(high)
+
+
+def sortFartestToClosest(tile_layers, tmxdata, reverse=False):
+    scores = []
+    for z, layer in enumerate(tile_layers):
+        for y, row in enumerate(layer.data):
+            for x in range(len(row)):
+                scores.append([x + y + z, (x, y, z)])
+
+    out = [item[1] for item in quicksort(scores)]
+
+    return out.reverse() if reverse else out

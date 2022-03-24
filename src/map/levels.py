@@ -10,8 +10,6 @@ import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
 import src.utils.audio as audio
-import src.utils.isometric as isometric
-
 
 log = getLogger(__name__)
 
@@ -36,6 +34,8 @@ class Level:
             - Tiled version: {self.tmxdata.tiledversion}\n"""
         )
 
+        self.tiles_sorted = tools.sortFartestToClosest(self.tile_layers, self.tmxdata)
+
         # Load entities
         self.entity_count = 0
         self.entity_manager = entity.EntityManager(self.animations_manager)
@@ -49,10 +49,7 @@ class Level:
 
                     x, y = (obj.x - layer.offsetx) / 10 - 1, (
                         (obj.y - layer.offsety) / 10
-                    )
                     z = layer.offsety * -1 / 14
-                    # print(isometric.isometric(16, 4, layer.offsety * -1 / 14))
-                    print(isometric.rev_isometric(x, y, z))
 
                     self.entity_manager.add_entity(
                         entity.Entity(x, y, z, obj)
