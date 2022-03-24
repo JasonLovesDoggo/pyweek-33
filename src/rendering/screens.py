@@ -14,7 +14,6 @@ class ScreenManager:
         self.clock = pygame.time.Clock()
 
     def add(self, surface: pygame.surface, name: str, callback=None):
-        base = {"name": name, "surface": surface}
         self.screens.append(Screen(surface, name, callback=callback))
 
         if len(self.screens) == 1:
@@ -23,7 +22,7 @@ class ScreenManager:
 
     def switch(self, target):
         if type(target) == str:
-            log.log(f"Switched to screen \"{target}\".")
+            log.log(f'Switched to screen "{target}".')
             index = self.getByName(self, target)
         else:
             index = target
@@ -51,6 +50,7 @@ class ScreenManager:
 
         pygame.display.update()
         return self.clock.tick(int(config["WINDOW"]["MAXFPS"])) / 1000
+
 
 class Screen:
     def __init__(self, surface, name, callback=None) -> None:
