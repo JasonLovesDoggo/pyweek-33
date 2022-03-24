@@ -24,7 +24,11 @@
 </data>
  </layer>
  <objectgroup id="15" name="Entities" offsetx="0" offsety="-14">
-  <object id="51" type="player" gid="29" x="70" y="40" width="20" height="24"/>
+  <object id="51" type="player" gid="29" x="70" y="40" width="20" height="24">
+   <properties>
+    <property name="idle" type="int" value="0"/>
+   </properties>
+  </object>
   <object id="62" gid="33" x="95.9091" y="41.9091" width="20" height="24"/>
  </objectgroup>
  <layer id="10" name="Tile Layer 2" width="12" height="10" offsetx="0" offsety="-14">
