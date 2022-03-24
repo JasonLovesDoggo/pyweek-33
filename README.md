@@ -4,7 +4,7 @@
 - insert details about the game here
 
 
- ## Our team
+ ## Credits
    
  #### Devs
  - **Jason** | [**_GitHub_**](https://github.com/JasonLovesDoggo) ~ [**_Discord_**](https://discordapp.com/users/511724576674414600) 
@@ -25,19 +25,30 @@
  - **Flarieanie** | `No GitHub` 
  
 
- ## Basic controls (Temporary)
+ ## Basic controls
+- W, A, S, D/Up, Down, Left, Right: Move
+- Escape: Pause/Play
 - Reset the level: f1
 - Toggle fps counter: f2
 
 
  ## Installation instructions 
-1. Install [python](https://www.python.org/downloads/)
+1. Install [Python](https://www.python.org/downloads/) and add to path
 2. Clone the repo
-3. Install the requirements via `pip install -r requirements.txt`
-4. Run main.py
+```
+git clone https://github.com/robert-abraham/PyWeek-33-March
+```
+3. Install the requirements
+```
+pip install -r requirements.txt
+```
+5. Run main.py
+```
+python main.py
+```
+
               
 #### Contributing Installation Instructions
-  1. If you are contributing also install the dev requirements via `pip install -r dev-requirments.txt`.
-  2. Run 
- `black .` and `flake8 .` before a pull require and fix any bugs.
-  
+  1. If you are contributing, you will also need to install some special utilities.
+  - Run `pip install -r dev-requirments.txt`.
+  - Install [Tiled Map Editor](https://www.mapeditor.org/)
