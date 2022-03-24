@@ -5,7 +5,7 @@ import pytmx
 import src.utils.tools as tools
 import src.gameobjects.entity as entity
 import src.gameobjects.enimies as enemy
-import src.utils.input as input
+import src.utils.basic_controls as basic_controls
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
@@ -69,7 +69,7 @@ class Level:
             f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
         )
 
-        self.movement_manager = input.MovementManager(self.entity_manager)
+        self.movement_manager = basic_controls.MovementManager(self.entity_manager)
 
         self.audio_manager = audio.AudioManager()
 
