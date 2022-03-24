@@ -1,4 +1,5 @@
 from src.utils.tools import HiddenPrints
+
 with HiddenPrints():
     import pygame
     from pygame.locals import *
@@ -7,7 +8,7 @@ from logging import getLogger
 log = getLogger(__name__)
 
 
-def end(code = None):
+def end(code=None):
     log.info(f"Quitting game{f' with code: {code}' if code is not None else ''}.")
     pygame.quit()
     quit()
@@ -35,7 +36,7 @@ def run_world(level, screen_manager, config, delta_time, offset, pause=False):
                     config["SETTINGS"]["SHOWFPS"] = "true"
         elif event.type == pygame.KEYUP:
             if event.key == pygame.K_ESCAPE:
-                return 'world' if pause else 'menu', level, offset
+                return "world" if pause else "menu", level, offset
         elif (
             event.type == pygame.WINDOWRESIZED
         ):  # If window is resized, resize the display surface.

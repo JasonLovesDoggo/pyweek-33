@@ -73,7 +73,9 @@ def run(screen_manager):
                 del target
 
         elif screen_manager.current.name == "menu":
-            res = game.run_world(level, screen_manager, config, delta_time, offset, pause=True)
+            res = game.run_world(
+                level, screen_manager, config, delta_time, offset, pause=True
+            )
             if res is not None:
                 target, level, offset = res
                 screen_manager.switch(screen_manager.getByName(target))
