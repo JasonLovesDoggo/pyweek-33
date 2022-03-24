@@ -56,7 +56,7 @@ class MovementManager:
                 used.append(func["func"])
                 if self.player.falling:
                     continue
-                func["func"](delta_time)
+                func["func"](self, delta_time)
 
         self.gravity(delta_time)
 
@@ -78,70 +78,74 @@ class MovementManager:
         else:
             self.player.falling = False
 
-    def UP(self, delta_time):
-        local_speed = self.player_speed * delta_time
-        target = (self.player.x_floor(), math.floor(self.player.y - local_speed))
-        if target not in self.player_collision_layer:
-            self.player.y -= local_speed
-        else:
-            target_type = self.player_collision_layer[
-                self.player_collision_layer.index(target) + 1
-            ]
-            if target_type == "solid":
-                pass
-            elif target_type == "stairs_north":
-                # go up stairs
-                pass
-            elif "stairs" in target_type:
-                pass
 
-    def DOWN(self, delta_time):
-        local_speed = self.player_speed * delta_time
-        target = (self.player.x_floor(), math.floor(self.player.y + local_speed))
-        if target not in self.player_collision_layer:
-            self.player.y += local_speed
-        else:
-            target_type = self.player_collision_layer[
-                self.player_collision_layer.index(target) + 1
-            ]
-            if target_type == "solid":
-                pass
-            elif target_type == "stairs_south":
-                # go up stairs
-                pass
-            elif "stairs" in target_type:
-                pass
+def UP(self, delta_time):
+    local_speed = self.player_speed * delta_time
+    target = (self.player.x_floor(), math.floor(self.player.y - local_speed))
+    if target not in self.player_collision_layer:
+        self.player.y -= local_speed
+    else:
+        target_type = self.player_collision_layer[
+            self.player_collision_layer.index(target) + 1
+        ]
+        if target_type == "solid":
+            pass
+        elif target_type == "stairs_north":
+            # go up stairs
+            pass
+        elif "stairs" in target_type:
+            pass
 
-    def LEFT(self, delta_time):
-        local_speed = self.player_speed * delta_time
-        target = (math.floor(self.player.x - local_speed), self.player.y_floor())
-        if target not in self.player_collision_layer:
-            self.player.x -= local_speed
-        else:
-            target_type = self.player_collision_layer[
-                self.player_collision_layer.index(target) + 1
-            ]
-            if target_type == "solid":
-                pass
-            elif target_type == "stairs_east":
-                # go up stairs
-                pass
-            elif "stairs" in target_type:
-                pass
 
-    def RIGHT(self, delta_time):
-        local_speed = self.player_speed * delta_time
-        target = (math.floor(self.player.x + local_speed), self.player.y_floor())
-        if target not in self.player_collision_layer:
-            self.player.x += local_speed
-        else:
-            target_type = self.player_collision_layer[
-                self.player_collision_layer.index(target) + 1
-            ]
-            if target_type == "solid":
-                pass
-            elif target_type == "stairs_west":
-                # go up stairs
-                pass
-            elif "stairs" in target_type:
-                pass
+def DOWN(self, delta_time):
+    local_speed = self.player_speed * delta_time
+    target = (self.player.x_floor(), math.floor(self.player.y + local_speed))
+    if target not in self.player_collision_layer:
+        self.player.y += local_speed
+    else:
+        target_type = self.player_collision_layer[
+            self.player_collision_layer.index(target) + 1
+        ]
+        if target_type == "solid":
+            pass
+        elif target_type == "stairs_south":
+            # go up stairs
+            pass
+        elif "stairs" in target_type:
+            pass
+
+
+def LEFT(self, delta_time):
+    local_speed = self.player_speed * delta_time
+    target = (math.floor(self.player.x - local_speed), self.player.y_floor())
+    if target not in self.player_collision_layer:
+        self.player.x -= local_speed
+    else:
+        target_type = self.player_collision_layer[
+            self.player_collision_layer.index(target) + 1
+        ]
+        if target_type == "solid":
+            pass
+        elif target_type == "stairs_east":
+            # go up stairs
+            pass
+        elif "stairs" in target_type:
+            pass
+
+
+def RIGHT(self, delta_time):
+    local_speed = self.player_speed * delta_time
+    target = (math.floor(self.player.x + local_speed), self.player.y_floor())
+    if target not in self.player_collision_layer:
+        self.player.x += local_speed
+    else:
+        target_type = self.player_collision_layer[
+            self.player_collision_layer.index(target) + 1
+        ]
+        if target_type == "solid":
+            pass
+        elif target_type == "stairs_west":
+            # go up stairs
+            pass
+        elif "stairs" in target_type:
+            pass
