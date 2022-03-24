@@ -3,7 +3,6 @@ from src.utils.tools import HiddenPrints, sizeString
 
 with HiddenPrints():
     import pygame
-    from pygame.locals import *
 import configparser
 import src.map.levels as levels
 import src.utils.input as input

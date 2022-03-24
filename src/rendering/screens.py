@@ -14,7 +14,6 @@ class ScreenManager:
         self.clock = pygame.time.Clock()
 
     def add(self, surface: pygame.surface, name: str, callback=None):
-        base = {"name": name, "surface": surface}
         self.screens.append(Screen(surface, name, callback=callback))
 
         if len(self.screens) == 1:
