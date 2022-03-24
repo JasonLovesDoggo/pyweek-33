@@ -42,13 +42,14 @@ git clone https://github.com/robert-abraham/PyWeek-33-March
 ```
 pip install -r requirements.txt
 ```
-5. Run main.py
+4. Run main.py
 ```
 python main.py
 ```
 
               
 #### Contributing Installation Instructions
-  1. If you are contributing, you will also need to install some special utilities.
+  1. If you are contributing, you will need to install some special utilities.
   - Run `pip install -r dev-requirments.txt`.
   - Install [Tiled Map Editor](https://www.mapeditor.org/)
+  2. Mahe sure you also read through [our contributing guidelines](https://github.com/robert-abraham/PyWeek-33-March/blob/Readme-Update/Contributing.md).
