@@ -4,6 +4,7 @@ from pytmx.util_pygame import load_pygame
 import pytmx
 import src.utils.tools as tools
 import src.gameobjects.entity as entity
+import src.gameobjects.enimies as enemy
 import src.utils.input as input
 import src.rendering.render as render
 import src.gameobjects.player as player
@@ -52,11 +53,12 @@ class Level:
                         layer.offsety * -1 / 14,
                     )
 
-                    self.entity_manager.add_entity(
-                        entity.Entity(x, y, z, obj)
-                        if type != "player"
-                        else player.Player(x, y, z, obj)
-                    )
+                    if type != "player":
+                        self.entity_manager.add_entity(player.Player(x, y, z, obj))
+                    elif type != "enemy":
+                        self.entity_manager.add_entity(enemy.Enemy(x, y, z, obj))
+                    else:
+                        self.entity_manager.add_entity(entity.Entity(x, y, z, obj))
                     self.entity_count += 1
 
         log.info(
