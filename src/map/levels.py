@@ -47,9 +47,7 @@ class Level:
                     except AttributeError:
                         type = ""
 
-                    x, y = (obj.x - layer.offsetx) / 10 - 1, (
-                        (obj.y - layer.offsety) / 10
-                    z = layer.offsety * -1 / 14
+                    x, y, z = (obj.x - layer.offsetx) / 10 - 1, (obj.y - layer.offsety) / 10, layer.offsety * -1 / 14
 
                     self.entity_manager.add_entity(
                         entity.Entity(x, y, z, obj)
