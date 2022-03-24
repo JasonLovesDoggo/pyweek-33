@@ -23,7 +23,7 @@ class ScreenManager:
 
     def switch(self, target):
         if type(target) == str:
-            log.log(f"Switched to screen \"{target}\".")
+            log.log(f'Switched to screen "{target}".')
             index = self.getByName(self, target)
         else:
             index = target
@@ -51,6 +51,7 @@ class ScreenManager:
 
         pygame.display.update()
         return self.clock.tick(int(config["WINDOW"]["MAXFPS"])) / 1000
+
 
 class Screen:
     def __init__(self, surface, name, callback=None) -> None:
