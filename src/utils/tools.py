@@ -36,7 +36,6 @@ def offsetToCenter(loc: tuple, size=(20, 24)):
     return (loc[0], loc[1] - size[0] / 2)
 
 
-
 def centerToOffset(loc: tuple, size=(20, 24)):
     return (loc[0] - size[0] / 2, loc[1] - size[1] / 2)
 
