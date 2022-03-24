@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.5" tiledversion="1.7.2" name="dev_animation_test" tilewidth="20" tileheight="24" tilecount="15" columns="5">
- <tileoffset x="0" y="14"/>
  <image source="tile_animation_test.png" width="100" height="72"/>
  <tile id="0">
   <objectgroup draworder="index" id="2">
