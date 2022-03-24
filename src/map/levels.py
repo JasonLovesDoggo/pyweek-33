@@ -10,15 +10,16 @@ import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
 import src.utils.audio as audio
+import src.utils.isometric as isometric
 
 log = getLogger(__name__)
 
 
 class Level:
-    def __init__(self, filename, config, current) -> None:
+    def __init__(self, filename, config, screen_manager) -> None:
         # Load map
-        self.current = current
-        self.display = current["surface"]
+        self.current = screen_manager.current
+        self.display = screen_manager.current.surface
         self.config = config
         self.filename = filename
         self.animations_manager = animations.Animation_manager()
@@ -39,6 +40,7 @@ class Level:
 
         # Load entities
         self.entity_count = 0
+        self.player_pos = (0, 0)
         self.entity_manager = entity.EntityManager(self.animations_manager)
         for layer in self.non_tile_layers:
             if isinstance(layer, pytmx.TiledObjectGroup):
@@ -56,6 +58,7 @@ class Level:
 
                     if type == "player":
                         self.entity_manager.add_entity(player.Player(x, y, z, obj))
+                        self.player_pos = isometric.isometric(x, y, z)
                     elif type == "enemy":
                         self.entity_manager.add_entity(enemy.Enemy(x, y, z, obj))
                     else:
@@ -84,5 +87,5 @@ class Level:
         return newClass
 
     def update(self):
-        self.display = self.current["surface"]
-        self.renderer.surface = self.display
+        self.display = self.current.surface
+        self.render_manager.surface = self.display
