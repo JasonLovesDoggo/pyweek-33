@@ -93,6 +93,9 @@ class TileManager:
                                 level.movement_manager.collision[z].append(
                                     collider.type
                                 )
+                                level.movement_manager.collision[z].append(
+                                    collider.properties
+                                )
                         except (KeyError, TypeError):
                             pass
 

@@ -2,6 +2,7 @@ import math
 from logging import getLogger
 
 import src.gameobjects.player as player
+import src.gameobjects.enemies as enemies
 
 log = getLogger(__name__)
 
@@ -33,6 +34,13 @@ class EntityManager:
                 self.player = index
                 return index
         return 0
+
+    def find_all_enemies(self):
+        found = []
+        for entity in self.entities:
+            if type(entity) == enemies.Enemy:
+                found.append(entity)
+        return found
 
     def get_outside_back_entities(self):
         outside_tiles = []
