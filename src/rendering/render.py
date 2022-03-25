@@ -31,70 +31,70 @@ class TileManager:
                 )
             self.surface.blit(image, pos)
 
-        for pos in level.tiles_sorted:
-            x, y, z = pos
-            try:
-                animation = level.tmxdata.get_tile_properties(x, y, z)["frames"]
-                if animation == []:
-                    animation = None
-            except TypeError:
-                animation = None
-
-            tile = level.tmxdata.get_tile_image(x, y, z)
-            if animation is not None:
-                tile = level.animations_manager.tile(
-                    animation, f"{x}:{y}:{z}", level.tmxdata, tile
-                )
-
-            # Draw in-bounds entities
-            tasks = level.entity_manager.get_tasks(x, y, z)
-            if len(tasks) > 0:
-                for task in tasks:
-                    pos = isometric.isometric(
-                        task.x, task.y, task.z, offset[0], offset[1]
-                    )
-                    if isinstance(task, player.Player):
-                        task.real_x = pos[0]
-                        task.real_y = pos[1]
-
+        for z, layer in enumerate(level.tile_layers):
+            level.movement_manager.collision.append([])
+            for y, row in enumerate(layer.data):
+                for x, tile in enumerate(row):
                     try:
-                        animation = task.obj.properties["frames"]
+                        animation = level.tmxdata.get_tile_properties(x, y, z)["frames"]
                         if animation == []:
                             animation = None
-                    except (TypeError, AttributeError, KeyError):
+                    except TypeError:
                         animation = None
 
-                    image = task.image
+                    tile = level.tmxdata.get_tile_image(x, y, z)
                     if animation is not None:
-                        image = level.animations_manager.tile(
-                            animation,
-                            str(task.obj.id),
-                            level.tmxdata,
-                            task.image,
+                        tile = level.animations_manager.tile(
+                            animation, f"{x}:{y}:{z}", level.tmxdata, tile
                         )
-                    self.surface.blit(image, pos)
 
-            if tile is not None:
-                self.surface.blit(
-                    tile,
-                    isometric.isometric(x, y, z, offset[0], offset[1]),
-                    (0, 0, 20, 24),
-                )
+                    # Draw in-bounds entities
+                    tasks = level.entity_manager.get_tasks(x, y, z)
+                    if len(tasks) > 0:
+                        for task in tasks:
+                            pos = isometric.isometric(
+                                task.x, task.y, task.z, offset[0], offset[1]
+                            )
+                            if isinstance(task, player.Player):
+                                task.real_x = pos[0]
+                                task.real_y = pos[1]
 
-                try:
-                    collider = level.tmxdata.get_tile_properties(x, y, z)["colliders"][
-                        0
-                    ]
+                            try:
+                                animation = task.obj.properties["frames"]
+                                if animation == []:
+                                    animation = None
+                            except (TypeError, AttributeError, KeyError):
+                                animation = None
 
-                    if collider.type is not None:
+                            image = task.image
+                            if animation is not None:
+                                image = level.animations_manager.tile(
+                                    animation,
+                                    str(task.obj.id),
+                                    level.tmxdata,
+                                    task.image,
+                                )
+                            self.surface.blit(image, pos)
+
+                    if tile is not None:
+                        self.surface.blit(
+                            tile,
+                            isometric.isometric(x, y, z, offset[0], offset[1]),
+                            (0, 0, 20, 24),
+                        )
+
                         try:
-                            level.movement_manager.collision[z]
-                        except IndexError:
-                            level.movement_manager.collision.append([])
-                        level.movement_manager.collision[z].append((x, y))
-                        level.movement_manager.collision[z].append(collider.type)
-                except (KeyError, TypeError):
-                    pass
+                            collider = level.tmxdata.get_tile_properties(x, y, z)[
+                                "colliders"
+                            ][0]
+
+                            if collider.type is not None:
+                                level.movement_manager.collision[z].append((x, y))
+                                level.movement_manager.collision[z].append(
+                                    collider.type
+                                )
+                        except (KeyError, TypeError):
+                            pass
 
         # Draws out-of-bounds entities in front of in-bounds geometry.
         for task in level.entity_manager.get_outside_front_entities(

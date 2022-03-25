@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.5" tiledversion="1.7.2" name="env_ground" tilewidth="20" tileheight="24" tilecount="2" columns="2">
- <tileoffset x="0" y="14"/>
  <image source="ground.png" width="40" height="24"/>
  <tile id="0">
   <objectgroup draworder="index" id="2">

@@ -3,10 +3,12 @@ from src.utils.tools import HiddenPrints, sizeString
 
 with HiddenPrints():
     import pygame
-    from pygame.locals import *
 import configparser
 import src.map.levels as levels
+import src.utils.input as input
+import src.rendering.screens as screens
 import logging
+import game
 
 
 # Get game configs.
@@ -30,8 +32,6 @@ log.info("Loaded configs.")
 
 def setup():
     log.info("Successfully initialized %s pygame modules, %s failed." % (pygame.init()))
-    clock = pygame.time.Clock()
-
     # Create windows and surfaces
     size = (int(config["WINDOW"]["DEFAULTX"]), int(config["WINDOW"]["DEFAULTY"]))
 
@@ -39,90 +39,70 @@ def setup():
     pygame.display.set_caption(config["WINDOW"]["TITLE"])
     screen = pygame.display.set_mode(
         size
-    )  # ad , pygame.RESIZABLE if you want it to be resizeable NOTE causes problems
-    smaller = size[1] if size[1] < size[0] else size[0]
-    display = pygame.Surface((smaller / 3, smaller / 3))
-    debug_font = pygame.font.SysFont("Arial", 30)
+    )  # add pygame.RESIZABLE if you want it to be resizeable NOTE causes problems
 
-    return clock, size, screen, display, debug_font
+    screen_manager = screens.ScreenManager(screen)
 
-
-def update_screen(screen, level, font, clock):
-    screen.blit(pygame.transform.scale(level.display, screen.get_size()), (0, 0))
-
-    if config["SETTINGS"]["SHOWFPS"].lower() == "true":
-        fps_surface = font.render(
-            f"Fps: {int(clock.get_fps())}", False, (255, 255, 255)
-        )
-        screen.blit(fps_surface, (0, 0))
-
-    pygame.display.update()
-    return clock.tick(int(config["WINDOW"]["MAXFPS"])) / 1000
+    return screen_manager
 
 
-def run_game(level, clock, size, screen, debug_font, delta_time):
+def run(screen_manager):
+    level = levels.Level("assets/levels/example.tmx", config, screen_manager)
+
+    level.movement_manager.add(pygame.K_UP, input.UP)
+    level.movement_manager.add(pygame.K_w, input.UP)
+    level.movement_manager.add(pygame.K_DOWN, input.DOWN)
+    level.movement_manager.add(pygame.K_s, input.DOWN)
+    level.movement_manager.add(pygame.K_LEFT, input.LEFT)
+    level.movement_manager.add(pygame.K_a, input.LEFT)
+    level.movement_manager.add(pygame.K_RIGHT, input.RIGHT)
+    level.movement_manager.add(pygame.K_d, input.RIGHT)
+
+    delta_time = screen_manager.update(config)
+
     offset = (150, 150)
-    log.info("Starting game loop.")
+
+    log.info("Starting update loop.")
     while True:
-        offset = level.render_manager.render_tiles_and_entities(
-            level, offset, int(config["SETTINGS"]["BOXCAMERAPADDING"])
-        )
+        if screen_manager.current.name == "world":
+            res = game.run_world(level, screen_manager, config, delta_time, offset)
+            if res is not None:
+                target, level, offset = res
+                screen_manager.switch(screen_manager.getByName(target))
+                del target
 
-        for event in pygame.event.get():
-            if event.type == QUIT:  # Quit routine.
-                log.info("Quitting game.")
-                pygame.quit()
-                quit()
-            elif event.type == KEYDOWN:
-                if event.key == K_F1:
-                    level = level.switch_level(level.filename)
-                elif event.key == K_F2:
-                    if config["SETTINGS"]["SHOWFPS"].lower() == "true":
-                        config["SETTINGS"]["SHOWFPS"] = "false"
-                    else:
-                        config["SETTINGS"]["SHOWFPS"] = "true"
-            elif (
-                event.type == pygame.WINDOWRESIZED
-            ):  # If window is resized, resize the display surface.
-                size = pygame.display.get_surface().get_size()
-                smaller = size[1] if size[1] < size[0] else size[0]
-                level.display = pygame.Surface((smaller / 3, smaller / 3))
-                level.update()
+        elif screen_manager.current.name == "menu":
+            res = game.run_world(
+                level, screen_manager, config, delta_time, offset, pause=True
+            )
+            if res is not None:
+                target, level, offset = res
+                screen_manager.switch(screen_manager.getByName(target))
+                del target
 
-        if (
-            config["DEBUG"]["RELOADONFALL"].lower() == "true"
-        ):  # this can also be used for death screen
-            if level.movement_manager.player.z < -5:
-                level = level.switch_level(level.filename)
-
-        # Movement system
-        level.movement_manager.run(
-            pygame.key.get_pressed(), level.entity_manager, delta_time, offset
-        )
-
-        delta_time = update_screen(screen, level, debug_font, clock)
+        delta_time = screen_manager.update(config)
 
 
 def main():
-    clock, size, screen, display, debug_font = setup()
+    screen_manager = setup()
 
-    level = levels.Level("assets/levels/example.tmx", config, display)
+    world = pygame.Surface(
+        (
+            screen_manager.target.get_size()[0] / 3,
+            screen_manager.target.get_size()[1] / 3,
+        )
+    )
+    screen_manager.add(world, "world")
 
-    # offset = level.movement_manager.player
+    display = pygame.Surface(
+        (
+            screen_manager.target.get_size()[0] / 3,
+            screen_manager.target.get_size()[1] / 3,
+        )
+    )
+    screen_manager.add(display, "menu")
 
-    delta_time = 0
-
-    # Add key callbacks
-    level.movement_manager.add(pygame.K_UP, level.movement_manager.UP)
-    level.movement_manager.add(pygame.K_w, level.movement_manager.UP)
-    level.movement_manager.add(pygame.K_DOWN, level.movement_manager.DOWN)
-    level.movement_manager.add(pygame.K_s, level.movement_manager.DOWN)
-    level.movement_manager.add(pygame.K_LEFT, level.movement_manager.LEFT)
-    level.movement_manager.add(pygame.K_a, level.movement_manager.LEFT)
-    level.movement_manager.add(pygame.K_RIGHT, level.movement_manager.RIGHT)
-    level.movement_manager.add(pygame.K_d, level.movement_manager.RIGHT)
-
-    run_game(level, clock, size, screen, debug_font, delta_time)
+    run(screen_manager)
 
 
 if __name__ == "__main__":

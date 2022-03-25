@@ -2,28 +2,29 @@ from logging import getLogger
 
 from pytmx.util_pygame import load_pygame
 import pytmx
-from src.utils.tools import instance_getter
+import src.utils.tools as tools
 import src.gameobjects.entity as entity
-import src.utils.input as game_input  # input shadows built-in input method
+import src.gameobjects.enimies as enemy
+import src.utils.input as input
 import src.rendering.render as render
 import src.gameobjects.player as player
 import src.rendering.animations as animations
 import src.utils.audio as audio
-import math
-import src.utils.tools as tools
+import src.utils.isometric as isometric
 
 log = getLogger(__name__)
 
 
 class Level:
-    def __init__(self, filename, config, display) -> None:
+    def __init__(self, filename, config, screen_manager) -> None:
         # Load map
-        self.display = display
+        self.current = screen_manager.current
+        self.display = screen_manager.current.surface
         self.config = config
         self.filename = filename
         self.animations_manager = animations.Animation_manager()
         self.tmxdata = load_pygame(self.filename)
-        self.tile_layers, self.non_tile_layers = instance_getter(
+        self.tile_layers, self.non_tile_layers = tools.instance_getter(
             self.tmxdata.layers, pytmx.TiledTileLayer
         )
 
@@ -39,6 +40,7 @@ class Level:
 
         # Load entities
         self.entity_count = 0
+        self.player_pos = (0, 0)
         self.entity_manager = entity.EntityManager(self.animations_manager)
         for layer in self.non_tile_layers:
             if isinstance(layer, pytmx.TiledObjectGroup):
@@ -47,28 +49,31 @@ class Level:
                         type = obj.type.lower()
                     except AttributeError:
                         type = ""
-                    # Don't even ask me what this shit is
+
                     x, y, z = (
-                        obj.x / 10 - 1,
-                        math.sqrt(obj.y) - 1,
-                        (layer.offsety * -1 / 14),
+                        (obj.x - layer.offsetx) / 10 - 1,
+                        (obj.y - layer.offsety) / 10,
+                        layer.offsety * -1 / 14,
                     )
-                    self.entity_manager.add_entity(
-                        entity.Entity(x, y, z, obj)
-                        if type != "player"
-                        else player.Player(x, y, z, obj)
-                    )
+
+                    if type == "player":
+                        self.entity_manager.add_entity(player.Player(x, y, z, obj))
+                        self.player_pos = isometric.isometric(x, y, z)
+                    elif type == "enemy":
+                        self.entity_manager.add_entity(enemy.Enemy(x, y, z, obj))
+                    else:
+                        self.entity_manager.add_entity(entity.Entity(x, y, z, obj))
                     self.entity_count += 1
 
         log.info(
             f'Loaded {self.entity_count} entit{"y" if self.entity_count == 1 else "ies"}.'
         )
 
-        self.movement_manager = game_input.MovementManager(self.entity_manager)
+        self.movement_manager = input.MovementManager(self.entity_manager)
 
         self.audio_manager = audio.AudioManager()
 
-        self.render_manager = render.TileManager(display)
+        self.render_manager = render.TileManager(self.display)
 
     def switch_level(self, filename):
         log.debug(f"switching level to {filename} from {self.filename}")
@@ -82,4 +87,5 @@ class Level:
         return newClass
 
     def update(self):
-        self.renderer.surface = self.display  # renderer doesn't exist
+        self.display = self.current.surface
+        self.render_manager.surface = self.display
