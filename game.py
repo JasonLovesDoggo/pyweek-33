@@ -1,4 +1,5 @@
 from src.utils.tools import HiddenPrints
+import src.gameobjects.enemies as enemies
 
 with HiddenPrints():
     import pygame
@@ -29,7 +30,7 @@ def run_world(level, screen_manager, config, delta_time, offset, pause=False):
             end()
         elif event.type == KEYDOWN:
             if event.key == K_F1 and not pause:
-                level = level.switch_level(level.filename)
+                level = level.switch_level(level.filename, screen_manager)
             elif event.key == K_F2:
                 if config["SETTINGS"]["SHOWFPS"].lower() == "true":
                     config["SETTINGS"]["SHOWFPS"] = "false"
@@ -49,8 +50,9 @@ def run_world(level, screen_manager, config, delta_time, offset, pause=False):
 
     if config["DEBUG"]["RELOADONFALL"].lower() == "true":
         if level.movement_manager.player.z < -5:
-            level = level.switch_level(level.filename)
+            level = level.switch_level(level.filename, screen_manager)
 
     # Movement system
     if not pause:
         level.movement_manager.run(keys, level.entity_manager, delta_time, offset)
+        enemies.pathfind(level)

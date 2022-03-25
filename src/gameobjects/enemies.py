@@ -3,7 +3,6 @@ import math
 from pathfinding.core.diagonal_movement import DiagonalMovement
 from pathfinding.core.grid import Grid
 from pathfinding.finder.a_star import AStarFinder
-import src.map.levels as Level_info
 
 from logging import getLogger
 
@@ -16,39 +15,60 @@ class Enemy:
         self.x = x
         self.y = y
         self.z = z
-        self.real_x = None
-        self.real_y = None
         self.x_floor = lambda: math.floor(self.x)
         self.y_floor = lambda: math.floor(self.y)
         self.z_floor = lambda: math.floor(self.z)
         self.obj = obj
         self.image = obj.image
         self.falling = False
-        self.Matrix = []
+        self.path_finding_matrix = []
+        self.target = (4, 9, 1)
 
     def __str__(self) -> str:
         return f"Enemy: {self.x}, {self.y}, {self.z}"
 
     def calculate_binary_grid(self, level):
-        x, y = Level_info.Level.return_tile_grid(level)
-        grid_before_rev = level.movement_manager.collision
-        self.Matrix = [[1 for x in range(x)] for y in range(y)]
-        for i, pos in enumerate(grid_before_rev[1]):
-            if (i % 2) == 0:
-                gy, gx = pos
-                print(gy, gx)
-                self.Matrix[gx][gy] = 0
+        collisions = level.movement_manager.collision[0]
+        binary_grid = [
+            [
+                1 if (x, y) in collisions else 0
+                for x in range(level.return_tile_grid()[0])
+            ]
+            for y in range(level.return_tile_grid()[1])
+        ]
+
+        return binary_grid
 
     def calculate_path(self, level):
-        self.calculate_binary_grid(self, level)
-        grid = Grid(matrix=self.Matrix)
+        binary_grid = self.calculate_binary_grid(level)
+        grid = Grid(matrix=binary_grid)
 
-        start = grid.node(0, 0)
-        end = grid.node(2, 9)
+        if self.z_floor == math.floor(
+            self.target[2]
+        ):  # Path does not need to take stairs
+            start = grid.node(self.x_floor(), self.y_floor())
+            end = grid.node(self.target[0], self.target[1])
+        else:  # Path does need to use stairs
+            # Changeme!
+            start = grid.node(self.x_floor(), self.y_floor())
+            end = grid.node(self.target[0], self.target[1])
+
         finder = AStarFinder(diagonal_movement=DiagonalMovement.always)
-        path, runs = finder.find_path(start, end, grid)
-        print("operations:", runs, "path length:", len(path))
+        path = finder.find_path(start, end, grid)[0]
+        print("path length:", len(path))
         print(grid.grid_str(path=path, start=start, end=end))
 
-    def set_enemy_movement_properties(self, roam=True, speed=5):
-        self.x = 1
+    def find_closest_elevator(level):
+        for z, layer in enumerate(level.tile_layers):
+            for y, row in enumerate(layer.data):
+                for x in range(len(row)):
+                    try:
+                        if level.tmxdata.get_tile_properties(x, y, z)["elevator"]:
+                            return (x, y, z)
+                    except TypeError:
+                        pass
+
+
+def pathfind(level):
+    for enemy in level.entity_manager.find_all_enemies():
+        enemy.calculate_path(level)

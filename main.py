@@ -8,8 +8,6 @@ import src.map.levels as levels
 import src.utils.basic_controls as basic_controls
 import src.rendering.screens as screens
 
-# import src.gameobjects.enemies as enemies
-# enemies.Enemy.calculate_path(enemies.Enemy, level)
 import logging
 import game
 

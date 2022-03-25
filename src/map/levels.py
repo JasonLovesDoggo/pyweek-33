@@ -46,9 +46,9 @@ class Level:
             if isinstance(layer, pytmx.TiledObjectGroup):
                 for obj in layer:
                     try:
-                        type = obj.type.lower()
+                        ent_type = obj.type.lower()
                     except AttributeError:
-                        type = ""
+                        ent_type = ""
 
                     x, y, z = (
                         (obj.x - layer.offsetx) / 10 - 1,
@@ -56,10 +56,10 @@ class Level:
                         layer.offsety * -1 / 14,
                     )
 
-                    if type == "player":
+                    if ent_type == "player":
                         self.entity_manager.add_entity(player.Player(x, y, z, obj))
                         self.player_pos = isometric.isometric(x, y, z)
-                    elif type == "enemy":
+                    elif ent_type == "enemy":
                         self.entity_manager.add_entity(enemy.Enemy(x, y, z, obj))
                     else:
                         self.entity_manager.add_entity(entity.Entity(x, y, z, obj))
@@ -80,13 +80,12 @@ class Level:
         x = self.tmxdata.width
         return x, y
 
-    def switch_level(self, filename):
+    def switch_level(self, filename, screen_manager):
         log.debug(f"switching level to {filename} from {self.filename}")
         config = self.config
-        display = self.display
         movementFuncs = self.movement_manager.func
 
-        newClass = Level(filename, config, display)
+        newClass = Level(filename, config, screen_manager)
 
         newClass.movement_manager.func = movementFuncs
         return newClass
