@@ -4,7 +4,7 @@ from pytmx.util_pygame import load_pygame
 import pytmx
 import src.utils.tools as tools
 import src.gameobjects.entity as entity
-import src.gameobjects.enimies as enemy
+import src.gameobjects.enemies as enemy
 import src.utils.basic_controls as basic_controls
 import src.rendering.render as render
 import src.gameobjects.player as player
@@ -74,6 +74,11 @@ class Level:
         self.audio_manager = audio.AudioManager()
 
         self.render_manager = render.TileManager(self.display)
+
+    def return_tile_grid(self):
+        y = self.tmxdata.height
+        x = self.tmxdata.width
+        return x, y
 
     def switch_level(self, filename):
         log.debug(f"switching level to {filename} from {self.filename}")

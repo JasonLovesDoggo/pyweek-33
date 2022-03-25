@@ -16,6 +16,7 @@ def end(code=None):
 
 def run_world(level, screen_manager, config, delta_time, offset, pause=False):
     level.current = screen_manager.current
+
     level.update()
 
     keys = pygame.key.get_pressed()

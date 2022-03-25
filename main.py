@@ -7,9 +7,11 @@ import configparser
 import src.map.levels as levels
 import src.utils.basic_controls as basic_controls
 import src.rendering.screens as screens
+
+# import src.gameobjects.enemies as enemies
+# enemies.Enemy.calculate_path(enemies.Enemy, level)
 import logging
 import game
-
 
 # Get game configs.
 config = configparser.ConfigParser()
@@ -66,6 +68,7 @@ def run(screen_manager):
     while True:
         if screen_manager.current.name == "world":
             res = game.run_world(level, screen_manager, config, delta_time, offset)
+
             if res is not None:
                 target, level, offset = res
                 screen_manager.switch(screen_manager.getByName(target))
