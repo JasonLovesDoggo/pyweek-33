@@ -5,11 +5,11 @@ with HiddenPrints():
     import pygame
 import configparser
 import src.map.levels as levels
-import src.utils.input as input
+import src.utils.basic_controls as basic_controls
 import src.rendering.screens as screens
+
 import logging
 import game
-
 
 # Get game configs.
 config = configparser.ConfigParser()
@@ -49,14 +49,14 @@ def setup():
 def run(screen_manager):
     level = levels.Level("assets/levels/example.tmx", config, screen_manager)
 
-    level.movement_manager.add(pygame.K_UP, input.UP)
-    level.movement_manager.add(pygame.K_w, input.UP)
-    level.movement_manager.add(pygame.K_DOWN, input.DOWN)
-    level.movement_manager.add(pygame.K_s, input.DOWN)
-    level.movement_manager.add(pygame.K_LEFT, input.LEFT)
-    level.movement_manager.add(pygame.K_a, input.LEFT)
-    level.movement_manager.add(pygame.K_RIGHT, input.RIGHT)
-    level.movement_manager.add(pygame.K_d, input.RIGHT)
+    level.movement_manager.add(pygame.K_UP, basic_controls.UP)
+    level.movement_manager.add(pygame.K_w, basic_controls.UP)
+    level.movement_manager.add(pygame.K_DOWN, basic_controls.DOWN)
+    level.movement_manager.add(pygame.K_s, basic_controls.DOWN)
+    level.movement_manager.add(pygame.K_LEFT, basic_controls.LEFT)
+    level.movement_manager.add(pygame.K_a, basic_controls.LEFT)
+    level.movement_manager.add(pygame.K_RIGHT, basic_controls.RIGHT)
+    level.movement_manager.add(pygame.K_d, basic_controls.RIGHT)
 
     delta_time = screen_manager.update(config)
 
@@ -66,6 +66,7 @@ def run(screen_manager):
     while True:
         if screen_manager.current.name == "world":
             res = game.run_world(level, screen_manager, config, delta_time, offset)
+
             if res is not None:
                 target, level, offset = res
                 screen_manager.switch(screen_manager.getByName(target))
